@@ -5,292 +5,182 @@
 <title>Content Dashboard V3 — Notion Style</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-/* ---------- GLOBAL ---------- */
-body {
-  font-family: 'Inter', sans-serif;
-  background: #f6f7f9;
-  margin: 0;
-  padding: 0;
-}
+    body {
+        font-family: Inter, sans-serif;
+        background: #f6f6f6;
+        margin: 0;
+        padding: 20px;
+    }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  padding: 32px 16px;
-}
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
 
-/* ---------- HEADER ---------- */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
+    .title {
+        font-size: 24px;
+        font-weight: 700;
+    }
 
-.title {
-  font-size: 26px;
-  font-weight: 600;
-}
+    .filters button {
+        border: 1px solid #ddd;
+        background: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        margin-right: 6px;
+        cursor: pointer;
+    }
 
-.btn {
-  padding: 8px 14px;
-  background: #2563eb;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  border: none;
-}
+    .filters button.active {
+        background: #2563eb;
+        color: white;
+        border-color: #2563eb;
+    }
 
-.btn:hover {
-  background: #1d4ed8;
-}
+    .card {
+        background: white;
+        padding: 18px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        margin-bottom: 28px;
+        border-left: 6px solid #e5e7eb;
+    }
 
-/* ---------- FILTERS ---------- */
-.filters {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-}
+    .platform-facebook { border-left-color: #1877f2; }
+    .platform-instagram { border-left-color: #d62976; }
+    .platform-tiktok { border-left-color: #000; }
 
-.filter-btn {
-  padding: 6px 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 14px;
-  border: 1px solid #ddd;
-}
+    .media-preview {
+        margin: 12px 0;
+        border-radius: 10px;
+        max-width: 260px;
+        overflow: hidden;
+        background: #f1f1f1;
+    }
 
-.filter-btn.active {
-  background: #2563eb;
-  color: white;
-  border-color: #2563eb;
-}
+    .media-preview img, .media-preview video {
+        width: 100%;
+        border-radius: 10px;
+    }
 
-/* ---------- POST CARD ---------- */
-.post-card {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 24px;
-  box-shadow: 0 2px 4px rgb(0 0 0 / 8%);
-}
+    .caption-box {
+        width: 100%;
+        min-height: 120px;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        font-size: 14px;
+    }
 
-/* PLATFORM COLORS */
-.platform-facebook { background: #e8f0fe; }
-.platform-instagram { background: #fdf2f8; }
-.platform-tiktok { background: #f0fdfa; }
+    .btn {
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        margin-right: 6px;
+    }
+    .btn-edit { background: #e5e7eb; }
+    .btn-update { background: #2563eb; color: white; }
+    .btn-rewrite { background: #16a34a; color: white; }
 
-/* Label */
-.label {
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-/* Caption box */
-textarea {
-  width: 100%;
-  border-radius: 6px;
-  padding: 12px;
-  border: 1px solid #ddd;
-  font-size: 14px;
-  min-height: 120px;
-}
-
-/* Post Info Grid */
-.info-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-select, input[type="text"], input[type="time"] {
-  width: 100%;
-  border: 1px solid #ddd;
-  padding: 8px;
-  border-radius: 6px;
-}
-
-/* Media */
-.media-box {
-  width: 100%;
-  margin: 12px 0;
-  background: #fafafa;
-  border-radius: 10px;
-  text-align: center;
-  padding: 12px;
-}
-
-.media-box img, .media-box video {
-  max-width: 100%;
-  border-radius: 10px;
-}
-
-/* Actions */
-.actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 16px;
-}
-
-.btn-sm {
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  border: none;
-}
-
-.edit-btn { background: #d1d5db; }
-.rewrite-btn { background: #fbbf24; }
-.save-btn { background: #10b981; }
-
-.wordcount {
-  margin-top: 10px;
-  font-size: 13px;
-  color: #666;
-}
 </style>
 </head>
+
 <body>
 
-<div class="container">
-
-  <div class="header">
+<div class="header">
     <div class="title">📘 Content Dashboard V3 — Notion Style</div>
     <button class="btn" onclick="loadPosts()">🔄 Refresh</button>
-  </div>
-
-  <!-- Filters -->
-  <div class="filters">
-    <div class="filter-btn active" onclick="filter('all')">Tất cả</div>
-    <div class="filter-btn" onclick="filter('Facebook')">Facebook</div>
-    <div class="filter-btn" onclick="filter('Instagram')">Instagram</div>
-    <div class="filter-btn" onclick="filter('Tiktok')">TikTok</div>
-  </div>
-
-  <div id="post-list"></div>
-
 </div>
 
-<script>
-const API_POSTS = "https://pfktja.ezn8n.com/webhook/api/posts";
-const API_UPDATE = "https://pfktja.ezn8n.com/webhook/api/update";
+<div class="filters">
+    <button class="active" onclick="filterPlatform('all')">Tất cả</button>
+    <button onclick="filterPlatform('Facebook')">Facebook</button>
+    <button onclick="filterPlatform('Instagram')">Instagram</button>
+    <button onclick="filterPlatform('Tiktok')">Tiktok</button>
+</div>
 
-/* Load posts */
+<div id="postsContainer"></div>
+
+<script defer>
+console.log("Dashboard script loaded.");
+
+const API_URL = "https://pfktja.ezn8n.com/webhook/api/posts";
+
 async function loadPosts() {
-  const res = await fetch(API_POSTS);
-  const data = await res.json();
-  renderPosts(data.posts);
-}
+    console.log("Fetching posts…");
 
-function filter(platform) {
-  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-  event.target.classList.add('active');
-  loadPosts().then(() => applyFilter(platform));
-}
+    try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
 
-function applyFilter(platform) {
-  document.querySelectorAll('.post-card').forEach(card => {
-    if (platform === 'all') {
-      card.style.display = "block";
-      return;
+        console.log("API Response:", data);
+
+        if (!data.posts || data.posts.length === 0) {
+            document.getElementById("postsContainer").innerHTML =
+                "<p>Không có bài viết hôm nay.</p>";
+            return;
+        }
+
+        renderPosts(data.posts);
+
+    } catch (err) {
+        console.error("Fetch error:", err);
+        document.getElementById("postsContainer").innerHTML =
+            "<p style='color:red'>Lỗi tải dữ liệu API</p>";
     }
-    card.style.display = card.dataset.platform === platform ? "block" : "none";
-  });
 }
 
-function mediaPreview(url) {
-  if (!url) return "<div>No media</div>";
-  if (url.includes("preview")) {
-    return `<video controls src="${url}"></video>`;
-  }
-  return `<img src="${url}" onerror="this.src='';this.parentElement.innerHTML='Không xem được ảnh';">`;
-}
-
-function wordCount(text) {
-  return text.trim().split(/\s+/).length;
-}
-
-/* Render posts */
 function renderPosts(posts) {
-  const wrap = document.getElementById("post-list");
-  wrap.innerHTML = "";
+    const container = document.getElementById("postsContainer");
+    container.innerHTML = "";
 
-  posts.forEach(post => {
-    const bgClass =
-      post.platform === "Facebook" ? "platform-facebook" :
-      post.platform === "Instagram" ? "platform-instagram" :
-      "platform-tiktok";
+    posts.forEach(post => {
+        const div = document.createElement("div");
+        div.className = `card platform-${post.platform.toLowerCase()}`;
 
-    const html = `
-      <div class="post-card ${bgClass}" data-platform="${post.platform}">
-        
-        <h3>#${post.post_id} — ${post.title}</h3>
-        <div class="label">${post.page} — <b>${post.platform}</b></div>
-        <div class="label">Ngày: ${post.plan_date} — Giờ: 
-          <input type="time" value="${post.plan_time}" id="time-${post.post_id}">
-        </div>
+        div.innerHTML = `
+            <h3>#${post.post_id} — ${post.title}</h3>
+            <div><b>Page:</b> ${post.page} — <b>${post.platform}</b></div>
+            <div><b>Ngày:</b> ${post.plan_date} — <b>Giờ:</b> ${post.plan_time}</div>
 
-        <div class="media-box">${mediaPreview(post.media_url)}</div>
+            <div class="media-preview">
+                ${post.media_url ? `<img src="${post.media_url}" />` : "Không có media"}
+            </div>
 
-        <div class="label">Caption</div>
-        <textarea id="caption-${post.post_id}">${post.caption || ""}</textarea>
+            <b>Caption</b>
+            <textarea class="caption-box" id="cap_${post.post_id}">${post.caption || ""}</textarea>
 
-        <div class="wordcount">📌 Số từ: ${wordCount(post.caption || "")}</div>
+            <br><br>
 
-        <div class="info-grid">
-          <div>
-            <div class="label">Topic</div>
-            <input id="topic-${post.post_id}" value="${post.topic || ""}">
-          </div>
-          <div>
-            <div class="label">Goal</div>
-            <input id="goal-${post.post_id}" value="${post.goal || ""}">
-          </div>
-          <div>
-            <div class="label">Style</div>
-            <input id="style-${post.post_id}" value="${post.style || ""}">
-          </div>
-          <div>
-            <div class="label">Audience</div>
-            <input id="aud-${post.post_id}" value="${post.audience || ""}">
-          </div>
-          <div>
-            <div class="label">Output Format</div>
-            <input id="format-${post.post_id}" value="${post.output || ""}">
-          </div>
-          <div>
-            <div class="label">Hashtag</div>
-            <input id="tag-${post.post_id}" value="${post.hashtags || ""}">
-          </div>
-        </div>
+            <button class="btn btn-edit" onclick="editPost(${post.post_id})">✏️ Edit</button>
+            <button class="btn btn-rewrite" onclick="rewrite(${post.post_id})">✨ Rewrite</button>
+            <button class="btn btn-update" onclick="updatePost(${post.post_id})">💾 Lưu & Cập nhật</button>
+        `;
 
-        <div class="actions">
-          <button class="btn-sm edit-btn">✏ Edit</button>
-          <button class="btn-sm rewrite-btn" onclick="rewrite(${post.post_id})">🔁 Rewrite</button>
-          <button class="btn-sm save-btn" onclick="save(${post.post_id})">💾 Lưu</button>
-        </div>
-
-      </div>
-    `;
-
-    wrap.insertAdjacentHTML("beforeend", html);
-  });
+        container.appendChild(div);
+    });
 }
 
-/* SAVE UPDATE */
-async function save(id) {
-  const body = {
-    post_id: id,
-    caption: document.getElementById(`caption-${id}`).value,
-    plan_time: document.getElementById(`time-${id}`).value,
-    topic: document.getElementById(`topic-${id}`).value,
-    goal: document.getElementById(`goal-${id}`).value,
-    style: document.getElementById(`style-${id}`).value,
-    audience: document.getElementById(`aud-${id}`).value,
-    output: document.getElementById(`forma
+function filterPlatform(platform) {
+    document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
+    event.target.classList.add("active");
+
+    const cards = document.querySelectorAll(".card");
+    cards.forEach(c => {
+        if (platform === "all") return (c.style.display = "block");
+        c.style.display = c.classList.contains(`platform-${platform.toLowerCase()}`) ? "block" : "none";
+    });
+}
+
+loadPosts();
+</script>
+
+</body>
+</html>
