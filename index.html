@@ -3,74 +3,85 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Content Dashboard V3 — Notion-like</title>
+<title>Content Dashboard V3 — Final</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-  :root{
-    --bg:#f6f7fb;
-    --card:#ffffff;
-    --muted:#6b7280;
-    --accent:#2563eb;
-    --accent-2:#06b6d4;
-    --radius:12px;
-    --shadow: 0 8px 30px rgba(14,30,37,0.06);
-    --glass: rgba(255,255,255,0.6);
-  }
-  *{box-sizing:border-box}
-  body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);margin:0;color:#111}
-  .wrap{max-width:1100px;margin:28px auto;padding:20px}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
-  .brand{display:flex;gap:12px;align-items:center}
-  .logo{width:52px;height:52px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px}
-  h1{font-size:20px;margin:0}
-  .sub{font-size:13px;color:var(--muted)}
-  .controls{display:flex;gap:10px;align-items:center}
-  .btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;border:0;cursor:pointer}
-  .btn-alt{background:#fff;border:1px solid #e6e8ee;padding:8px 12px;border-radius:10px;cursor:pointer}
-  .filters{display:flex;gap:8px;align-items:center}
-  .chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid transparent;cursor:pointer;font-size:14px}
-  .chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-  .list{display:flex;flex-direction:column;gap:18px;margin-top:12px}
-  .card-wrap{display:flex;flex-direction:column}
-  .card{display:flex;gap:16px;background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);align-items:flex-start}
-  .left{width:260px;min-width:220px}
-  .right{flex:1}
-  .meta{font-size:13px;color:var(--muted);margin-bottom:8px}
-  .title{font-weight:600;margin:0 0 8px 0;font-size:16px}
-  .media{border-radius:10px;overflow:hidden;background:#fafafa;width:100%;height:160px;display:flex;align-items:center;justify-content:center}
-  .media img, .media video{width:100%;height:100%;object-fit:contain;display:block}
-  .caption{width:100%;min-height:120px;padding:12px;border-radius:8px;border:1px solid #e6e8ee;font-size:14px;resize:vertical}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-  .field{display:flex;flex-direction:column;gap:6px}
-  .field input, .field select{padding:8px;border-radius:8px;border:1px solid #e6e8ee;font-size:14px}
-  .actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-  .btn-sm{padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
-  .btn-edit{background:#eef2ff;color:#0b3b8c}
-  .btn-rewrite{background:#f59e0b;color:#fff}
-  .btn-save{background:#10b981;color:#fff}
-  .small{font-size:13px;color:var(--muted)}
-  .badge{display:inline-block;padding:6px 8px;border-radius:8px;background:#f3f4f6;color:#111;font-size:12px;margin-left:6px}
-  /* platform border */
-  .platform-facebook .card{border-left:8px solid #1877f2}
-  .platform-instagram .card{border-left:8px solid #fb4386}
-  .platform-tiktok .card{border-left:8px solid #111}
-  /* responsive */
-  @media (max-width:900px){
-    .card{flex-direction:column}
-    .left{width:100%;min-width:unset}
-    .media{height:220px}
-    .grid{grid-template-columns:1fr}
-    header{flex-direction:column;align-items:flex-start;gap:12px}
-  }
-  /* loading overlay for rewrite */
-  .overlay {
-    position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.35);display:flex;align-items:center;justify-content:center;z-index:9999;
-  }
-  .loader {
-    background:#fff;padding:18px;border-radius:12px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 30px rgba(0,0,0,0.2)
-  }
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#2563eb;
+  --accent-2:#06b6d4;
+  --success:#10b981;
+  --warning:#f59e0b;
+  --danger:#ef4444;
+  --radius:12px;
+  --shadow: 0 10px 30px rgba(14,30,37,0.06);
+}
+*{box-sizing:border-box}
+body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);margin:0;color:#0f172a}
+.wrap{max-width:1150px;margin:26px auto;padding:18px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;box-shadow:0 6px 18px rgba(37,99,235,0.12)}
+h1{font-size:20px;margin:0}
+.sub{font-size:13px;color:var(--muted)}
+.controls{display:flex;gap:12px;align-items:center}
+.btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;border:0;cursor:pointer}
+.btn-alt{background:#fff;border:1px solid #e6e8ee;padding:8px 12px;border-radius:10px;cursor:pointer}
+.filters{display:flex;gap:8px;align-items:center}
+.chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid transparent;cursor:pointer;font-size:14px}
+.chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.status{font-size:13px;color:var(--muted);margin-bottom:12px}
+
+/* list & cards */
+.list{display:flex;flex-direction:column;gap:18px}
+.card-wrap{display:block}
+.card{display:flex;gap:18px;background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);align-items:flex-start;overflow:hidden}
+.left{width:280px;min-width:220px}
+.right{flex:1}
+.meta{font-size:13px;color:var(--muted);margin-bottom:8px}
+.title{font-weight:600;margin:0 0 8px 0;font-size:16px}
+.media{border-radius:8px;overflow:hidden;background:#fafafa;width:100%;height:160px;display:flex;align-items:center;justify-content:center;border:1px solid #f0f2f5}
+.media img, .media video, .media iframe{width:100%;height:100%;object-fit:contain;display:block;border:0}
+.caption{width:100%;min-height:120px;padding:12px;border-radius:8px;border:1px solid #e6e8ee;font-size:14px;resize:vertical}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;color:var(--muted)}
+.field input, .field select, textarea{padding:10px;border-radius:8px;border:1px solid #e6e8ee;font-size:14px}
+.actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn-sm{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
+.btn-edit{background:#eef2ff;color:#0b3b8c}
+.btn-rewrite{background:var(--warning);color:#fff}
+.btn-save{background:var(--success);color:#fff}
+.small{font-size:13px;color:var(--muted)}
+.badge{display:inline-block;padding:6px 8px;border-radius:8px;background:#f3f4f6;color:#111;font-size:12px;margin-left:6px}
+
+/* platform color indicator */
+.platform-facebook .card{border-left:8px solid #1877f2}
+.platform-instagram .card{border-left:8px solid #fb4386}
+.platform-tiktok .card{border-left:8px solid #111}
+
+/* responsive */
+@media (max-width:1000px){
+  .card{flex-direction:column}
+  .left{width:100%;min-width:unset}
+  .media{height:220px}
+  .grid{grid-template-columns:1fr}
+  header{flex-direction:column;align-items:flex-start;gap:12px}
+}
+
+/* overlay loading */
+.overlay {
+  position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.35);display:none;align-items:center;justify-content:center;z-index:9999;
+}
+.loader {
+  background:#fff;padding:16px;border-radius:12px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px rgba(2,6,23,0.2)
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:36px;height:36px;border-radius:50%;border:4px solid #eee;border-top-color:var(--accent);animation:spin 1s linear infinite}
 </style>
 </head>
 <body>
@@ -79,213 +90,211 @@
     <div class="brand">
       <div class="logo">CD</div>
       <div>
-        <h1>Content Dashboard V3 — Notion-like</h1>
-        <div class="sub">Duyệt & chỉnh sửa nội dung — dynamic fields từ Google Sheets · preview ảnh/video · rewrite AI</div>
+        <h1>Content Dashboard V3 — Final</h1>
+        <div class="sub">Notion-like · Dynamic fields từ Google Sheets · Preview ảnh/video · Rewrite AI · Inline edit</div>
       </div>
     </div>
 
     <div class="controls">
       <div class="filters" id="filterBar">
-        <div class="chip active" data-plat="all" onclick="applyFilter('all', this)">Tất cả</div>
-        <div class="chip" data-plat="Facebook" onclick="applyFilter('Facebook', this)">Facebook</div>
-        <div class="chip" data-plat="Instagram" onclick="applyFilter('Instagram', this)">Instagram</div>
-        <div class="chip" data-plat="Tiktok" onclick="applyFilter('Tiktok', this)">TikTok</div>
+        <div class="chip active" data-plat="all">Tất cả</div>
+        <div class="chip" data-plat="Facebook">Facebook</div>
+        <div class="chip" data-plat="Instagram">Instagram</div>
+        <div class="chip" data-plat="Tiktok">TikTok</div>
       </div>
-      <button class="btn" onclick="refreshAll()">🔄 Refresh</button>
+      <button class="btn" id="btnRefresh">🔄 Refresh</button>
     </div>
   </header>
 
-  <main>
-    <div id="status" class="small" style="margin-bottom:10px">⏳ Chưa tải dữ liệu</div>
-    <div id="postList" class="list"></div>
-  </main>
+  <div id="status" class="status">⏳ Chuẩn bị...</div>
+  <div id="postList" class="list"></div>
 
-  <div style="margin-top:20px;font-size:13px;color:var(--muted)">
-    <span>Sample CSV (local upload): </span>
-    <a href="/mnt/data/Content-Planner - Plan.csv" target="_blank">/mnt/data/Content-Planner - Plan.csv</a>
+  <div style="margin-top:18px;font-size:13px;color:var(--muted)">
+    Sample local CSV: <a href="/mnt/data/Content-Planner - Plan.csv" target="_blank">/mnt/data/Content-Planner - Plan.csv</a>
   </div>
 </div>
 
-<!-- Loading overlay -->
-<div id="overlay" style="display:none" class="overlay">
+<!-- overlay -->
+<div id="overlay" class="overlay">
   <div class="loader">
-    <div class="spinner" style="width:36px;height:36px;border-radius:50%;border:4px solid #eee;border-top-color:var(--accent);animation:spin 1s linear infinite"></div>
+    <div class="spinner"></div>
     <div><strong>Đang xử lý — chờ AI trả nội dung...</strong></div>
   </div>
 </div>
 
-<style>
-@keyframes spin{to{transform:rotate(360deg)}}
-</style>
-
 <script>
-/* ---- CONFIG: sửa endpoint nếu cần ---- */
+/* CONFIG - sửa endpoint khi deploy */
 const API_FIELDS = "https://pfktja.ezn8n.com/webhook/api/fields";
 const API_POSTS  = "https://pfktja.ezn8n.com/webhook/api/posts";
 const API_UPDATE = "https://pfktja.ezn8n.com/webhook/api/update";
 const API_REWRITE = "https://pfktja.ezn8n.com/webhook/api/rewrite";
 
-/* ---- in-memory storage ---- */
-let FIELD_OPTIONS = {};   // will hold arrays per field name
-let POSTS = [];           // loaded posts
+/* state */
+let FIELD_OPTIONS = {};
+let POSTS = [];
 let CURRENT_FILTER = 'all';
 
-/* ---- utility: safe fetch JSON with error handling ---- */
+/* helper fetch JSON with errors */
 async function fetchJson(url, opts){
   const res = await fetch(url, opts);
   if(!res.ok){
-    const text = await res.text().catch(()=>'');
-    throw new Error(`HTTP ${res.status} ${res.statusText} - ${text}`);
+    const txt = await res.text().catch(()=>null);
+    throw new Error(`HTTP ${res.status}: ${txt || res.statusText}`);
   }
-  const j = await res.json().catch(e => { throw new Error('Invalid JSON: ' + e.message) });
-  return j;
+  return res.json();
 }
 
-/* ---- media url logic (image vs video) ---- */
-function mediaUrlFrom(post){
-  // prefer media_url from API if present
-  if(post.media_url) return post.media_url;
-  const id = (post.media_id || post.Image || post.Video || '').toString();
+/* normalize google drive id or url */
+function extractDriveId(val){
+  if(!val) return null;
+  // if full url with /d/ID/
+  const m = (''+val).match(/\/d\/([a-zA-Z0-9_-]{10,})/);
+  if(m) return m[1];
+  // url param id=
+  const m2 = (''+val).match(/[?&]id=([a-zA-Z0-9_-]{10,})/);
+  if(m2) return m2[1];
+  // plain id?
+  if(/^[a-zA-Z0-9_-]{10,}$/.test(val)) return val;
+  // fallback null
+  return null;
+}
+
+/* build preview URL - use thumbnail for images; iframe preview for video */
+function buildPreviewUrl(media_id, media_type) {
+  const id = extractDriveId(media_id);
   if(!id) return null;
-  // if looks like a full drive link
-  if(id.includes('drive.google.com')){
-    const m = id.match(/\/d\/([^\/]+)/);
-    if(m) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
-    // else maybe already a uc?export=view link
-    if(id.includes('uc?export=')) return id;
+  // Always use thumbnail for image preview (fast)
+  if(media_type && media_type.toLowerCase().includes('video')) {
+    return { type:'video', url: `https://drive.google.com/file/d/${id}/preview` };
   }
-  // if video id or extension -> use preview
-  if(/\.mp4|\.mov|\.webm/i.test(id) || (post.media_type && post.media_type.toLowerCase().includes('video'))){
-    // try file/d/{id}/preview
-    const pure = id.split('/').pop();
-    return `https://drive.google.com/file/d/${pure}/preview`;
-  }
-  // otherwise return image uc view
-  const pure = id.split('/').pop();
-  return `https://drive.google.com/uc?export=view&id=${pure}`;
+  // else image - thumbnail endpoint
+  return { type:'image', url: `https://drive.google.com/thumbnail?id=${id}` };
 }
 
-/* ---- load fields (dropdown values) ---- */
+/* load field values from API */
 async function loadFields(){
   try{
-    document.getElementById('status').innerText = '⏳ Đang tải danh sách field...';
-    const data = await fetchJson(API_FIELDS);
+    document.getElementById('status').innerText = '⏳ Tải dropdown fields...';
+    const data = await fetchJson(API_FIELDS, {cache:'no-store'});
     FIELD_OPTIONS = data.fields || {};
-    document.getElementById('status').innerText = '✅ Đã tải field';
+    document.getElementById('status').innerText = '✅ Fields sẵn sàng';
   }catch(err){
     console.error('loadFields', err);
-    document.getElementById('status').innerText = '❌ Lỗi tải fields: ' + err.message;
     FIELD_OPTIONS = {};
+    document.getElementById('status').innerText = '⚠ Lỗi load fields: ' + err.message;
   }
 }
 
-/* ---- load posts ---- */
+/* load posts from API */
 async function loadPosts(){
   try{
-    document.getElementById('status').innerText = '⏳ Đang tải posts...';
-    const data = await fetchJson(API_POSTS, { cache:'no-store' });
+    document.getElementById('status').innerText = '⏳ Tải posts...';
+    const data = await fetchJson(API_POSTS, {cache:'no-store'});
     POSTS = data.posts || [];
     renderPosts(POSTS);
     document.getElementById('status').innerText = `✅ Đã tải ${POSTS.length} bài`;
   }catch(err){
     console.error('loadPosts', err);
-    document.getElementById('status').innerText = '❌ Lỗi tải posts: ' + err.message;
+    POSTS = [];
     document.getElementById('postList').innerHTML = '';
+    document.getElementById('status').innerText = '⚠ Lỗi load posts: ' + err.message;
   }
 }
 
-/* ---- helper: build select HTML from FIELD_OPTIONS ---- */
-function buildSelectHTML(fieldKey, selected){
-  const options = FIELD_OPTIONS[fieldKey] || [];
-  let html = `<select data-field="${fieldKey}" class="field-input">`;
-  html += `<option value="">— (chọn) —</option>`;
-  options.forEach(opt => {
-    const v = (opt || '').toString().replaceAll('"','&quot;');
-    html += `<option value="${v}" ${v===selected ? 'selected' : ''}>${v}</option>`;
-  });
-  html += `</select>`;
-  return html;
+/* Build select HTML or fallback input for a field (scoped to a card) */
+function buildFieldControl(fieldKey, currentValue, postId){
+  const opts = FIELD_OPTIONS[fieldKey] || [];
+  const idAttr = `data-field="${fieldKey}" data-post="${postId}"`;
+  if(Array.isArray(opts) && opts.length>0){
+    let html = `<select ${idAttr} class="field-input">`;
+    html += `<option value="">— (chọn) —</option>`;
+    opts.forEach(o=>{
+      const safe = (o||'').toString().replaceAll('"','&quot;');
+      html += `<option value="${safe}" ${safe===currentValue ? 'selected' : ''}>${safe}</option>`;
+    });
+    html += `</select>`;
+    return html;
+  } else {
+    return `<input ${idAttr} value="${(currentValue||'').toString().replaceAll('"','&quot;')}" />`;
+  }
 }
 
-/* ---- render posts (list) ---- */
+/* render all posts */
 function renderPosts(posts){
   const wrap = document.getElementById('postList');
   wrap.innerHTML = '';
-  if(!posts || posts.length===0){ wrap.innerHTML = '<div class="small">Không có bài nào</div>'; return; }
+  if(!posts.length){
+    wrap.innerHTML = '<div class="small">Không có bài.</div>';
+    return;
+  }
 
-  posts.forEach(post => {
-    const container = document.createElement('div');
-    container.className = `card-wrap platform-${(post.platform||'').toLowerCase()}`;
+  posts.forEach(post=>{
+    const cardWrap = document.createElement('div'); cardWrap.className = `card-wrap platform-${(post.platform||'').toLowerCase()}`;
+    const card = document.createElement('div'); card.className = 'card';
 
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    // left column: metadata + media
+    // LEFT
     const left = document.createElement('div'); left.className = 'left';
-    const title = document.createElement('div'); title.className = 'meta';
-    title.innerHTML = `ID <span class="badge">${post.post_id}</span>`;
-    const heading = document.createElement('div');
-    heading.style.fontWeight = '600'; heading.style.margin = '8px 0';
-    heading.innerText = post.title || '';
-    const metaLine = document.createElement('div'); metaLine.className = 'meta';
-    metaLine.innerHTML = `${post.page || ''} — <strong>${post.platform || ''}</strong>`;
+    const idBadge = document.createElement('div'); idBadge.className = 'meta'; idBadge.innerHTML = `ID <span class="badge">${post.post_id}</span>`;
+    const title = document.createElement('div'); title.className='title'; title.innerText = post.title || '';
+    const pageLine = document.createElement('div'); pageLine.className='meta'; pageLine.innerHTML = `${post.page || ''} — <strong>${post.platform || ''}</strong>`;
+    const dateLine = document.createElement('div'); dateLine.className='meta';
+    const timeValue = (post.plan_time||'').split(':').slice(0,2).join(':');
+    dateLine.innerHTML = `Ngày: ${post.plan_date || '-'} • Giờ: <input type="time" value="${timeValue||''}" data-time="${post.post_id}" />`;
 
-    const dateLine = document.createElement('div'); dateLine.className = 'meta';
-    dateLine.innerHTML = `Ngày: ${post.plan_date || '-'} • Giờ: <input type="time" id="time_${post.post_id}" value="${(post.plan_time||'').slice(0,5)}" />`;
-
-    const mediabox = document.createElement('div'); mediabox.className = 'media';
-    const murl = mediaUrlFrom(post);
-    if(murl){
-      if(/\/preview$|\.mp4|\.mov|\.webm/i.test(murl) || (post.media_type && post.media_type.toLowerCase().includes('video'))){
-        mediabox.innerHTML = `<video controls src="${murl}"></video>`;
+    // media
+    const mediaBox = document.createElement('div'); mediaBox.className='media';
+    const preview = buildPreviewUrl(post.media_url || post.media_id, post.media_type);
+    if(preview && preview.url){
+      if(preview.type === 'video'){
+        // use iframe preview (drive preview)
+        const iframe = document.createElement('iframe');
+        iframe.src = preview.url;
+        iframe.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+        iframe.setAttribute('loading','lazy');
+        mediaBox.appendChild(iframe);
       } else {
-        mediabox.innerHTML = `<img src="${murl}" alt="media" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=color:var(--muted);padding:12px'>Không xem được ảnh</div>'" />`;
+        const img = document.createElement('img');
+        img.src = preview.url;
+        img.alt = post.title || 'media';
+        img.onerror = function(){ this.style.display = 'none'; mediaBox.innerHTML = `<div style="padding:12px;color:var(--muted)">Không xem được ảnh</div>`};
+        mediaBox.appendChild(img);
       }
     } else {
-      mediabox.innerHTML = `<div style="padding:12px;color:var(--muted)">No media</div>`;
+      mediaBox.innerHTML = `<div style="padding:12px;color:var(--muted)">No media</div>`;
     }
 
+    left.appendChild(idBadge);
     left.appendChild(title);
-    left.appendChild(heading);
-    left.appendChild(metaLine);
+    left.appendChild(pageLine);
     left.appendChild(dateLine);
-    left.appendChild(mediabox);
+    left.appendChild(mediaBox);
 
-    // right column: fields + caption + actions
+    // RIGHT
     const right = document.createElement('div'); right.className = 'right';
 
-    // Top line: fields (dynamic selects)
-    const fieldsRow = document.createElement('div'); fieldsRow.className = 'grid';
-    // mapping keys to your sheet names: use normalized keys
-    // expected FIELD_OPTIONS keys may be: topic, goal, style, audience, format (we will try multiple keys)
+    // dynamic fields row
+    const grid = document.createElement('div'); grid.className='grid';
     const mapKeys = [
-      {key:'topic', label:'Topic', val: post.Topic || post.topic || ''},
+      {key:'topic', label:'Topic', val: post.topic || post.Topic || ''},
       {key:'goal', label:"Post's goal", val: post["Post's goal"] || post.goal || ''},
       {key:'style', label:'Desired style', val: post["Desired style"] || post.style || ''},
       {key:'audience', label:'Target audience', val: post["Target audience"] || post.audience || ''},
       {key:'format', label:'Output Format', val: post["Output Format"] || post.output_format || post.output || ''}
     ];
-
-    mapKeys.forEach(mk=>{
-      const fdiv = document.createElement('div'); fdiv.className='field';
-      const flabel = document.createElement('div'); flabel.className='small'; flabel.innerText = mk.label;
-      const finputWrap = document.createElement('div');
-      // dynamic select (if options exist) or fallback to input
-      if(FIELD_OPTIONS && FIELD_OPTIONS[mk.key] && FIELD_OPTIONS[mk.key].length>0){
-        finputWrap.innerHTML = buildSelectHTML(mk.key, mk.val || '');
-      } else {
-        finputWrap.innerHTML = `<input data-field="${mk.key}" value="${(mk.val||'').toString().replaceAll('"','&quot;')}" />`;
-      }
-      fdiv.appendChild(flabel);
-      fdiv.appendChild(finputWrap);
-      fieldsRow.appendChild(fdiv);
+    mapKeys.forEach(m=>{
+      const f = document.createElement('div'); f.className='field';
+      const lab = document.createElement('label'); lab.innerText = m.label;
+      const control = document.createElement('div');
+      control.innerHTML = buildFieldControl(m.key, m.val, post.post_id);
+      f.appendChild(lab); f.appendChild(control);
+      grid.appendChild(f);
     });
 
     // caption
-    const capLabel = document.createElement('div'); capLabel.className='meta'; capLabel.style.marginTop='12px'; capLabel.innerText = 'Caption';
+    const capLabel = document.createElement('div'); capLabel.className='meta'; capLabel.style.marginTop='12px'; capLabel.innerText='Caption';
     const textarea = document.createElement('textarea'); textarea.className='caption'; textarea.id = `cap_${post.post_id}`;
-    textarea.value = post.caption || post['Post Content'] || '';
-    textarea.addEventListener('input', ()=> updateStats(post.post_id, textarea.value));
+    textarea.value = post.caption || post["Post Content"] || '';
+    textarea.addEventListener('input', ()=>updateStats(post.post_id, textarea.value));
 
     // stats
     const stats = document.createElement('div'); stats.className='small'; stats.style.marginTop='8px';
@@ -294,107 +303,87 @@ function renderPosts(posts){
     // actions
     const actions = document.createElement('div'); actions.className='actions';
     const btnEdit = document.createElement('button'); btnEdit.className='btn-sm btn-edit'; btnEdit.innerText='✏ Edit'; btnEdit.onclick = ()=> textarea.focus();
-    const btnRewrite = document.createElement('button'); btnRewrite.className='btn-sm btn-rewrite'; btnRewrite.innerText='🔁 Rewrite'; btnRewrite.onclick = ()=> rewritePost(post.post_id, textarea);
-    const btnSave = document.createElement('button'); btnSave.className='btn-sm btn-save'; btnSave.innerText='💾 Lưu & Cập nhật'; btnSave.onclick = ()=> savePost(post);
+    const btnRewrite = document.createElement('button'); btnRewrite.className='btn-sm btn-rewrite'; btnRewrite.innerText='🔁 Rewrite';
+    btnRewrite.onclick = ()=> rewriteHandler(post.post_id, textarea);
+    const btnSave = document.createElement('button'); btnSave.className='btn-sm btn-save'; btnSave.innerText='💾 Lưu & Cập nhật';
+    btnSave.onclick = ()=> saveHandler(post, card);
 
     actions.appendChild(btnEdit); actions.appendChild(btnRewrite); actions.appendChild(btnSave);
 
-    // compose right
-    right.appendChild(fieldsRow);
+    right.appendChild(grid);
     right.appendChild(capLabel);
     right.appendChild(textarea);
     right.appendChild(stats);
     right.appendChild(actions);
 
-    // assemble
     card.appendChild(left);
     card.appendChild(right);
-    container.appendChild(card);
-    document.getElementById('postList').appendChild(container);
+    cardWrap.appendChild(card);
+    wrap.appendChild(cardWrap);
 
     // initial stats
     updateStats(post.post_id, textarea.value);
   });
 
-  // apply current filter
+  // apply filter after render
   applyFilter(CURRENT_FILTER);
 }
 
-/* ---- update word/char stats ---- */
+/* update word/char counts */
 function updateStats(id, text){
-  const wc = text.trim()? text.trim().split(/\s+/).length : 0;
-  const cc = text.length;
+  const words = text.trim()? text.trim().split(/\s+/).length : 0;
+  const chars = text.length;
   const wEl = document.getElementById(`wc_${id}`);
   const cEl = document.getElementById(`cc_${id}`);
-  if(wEl) wEl.innerText = wc;
-  if(cEl) cEl.innerText = cc;
+  if(wEl) wEl.innerText = words;
+  if(cEl) cEl.innerText = chars;
 }
 
-/* ---- apply filter ---- */
-function applyFilter(plat, el){
+/* filter UI */
+document.getElementById('filterBar').addEventListener('click', (e)=>{
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  const plat = chip.dataset.plat || 'all';
   CURRENT_FILTER = plat;
-  // UI chips
   document.querySelectorAll('#filterBar .chip').forEach(c=>c.classList.remove('active'));
-  if(el) el.classList.add('active'); else {
-    document.querySelectorAll(`#filterBar .chip`).forEach(c=> {
-      if(c.dataset.plat === plat) c.classList.add('active');
-    });
-  }
-  // filter cards
-  document.querySelectorAll('#postList > div').forEach(cardWrap=>{
-    if(plat === 'all'){ cardWrap.style.display = 'block'; return; }
+  chip.classList.add('active');
+  applyFilter(plat);
+});
+function applyFilter(plat){
+  document.querySelectorAll('#postList .card-wrap').forEach(w=>{
+    if(plat==='all'){ w.style.display='block'; return; }
     const cls = 'platform-'+plat.toLowerCase();
-    cardWrap.style.display = cardWrap.classList.contains(cls) ? 'block' : 'none';
+    w.style.display = w.classList.contains(cls) ? 'block' : 'none';
   });
 }
 
-/* ---- save post ---- */
-async function savePost(originalPost){
-  // find values from DOM
-  const id = originalPost.post_id;
-  const payload = { post_id: id };
+/* Save: gather inputs/selects inside the same card */
+async function saveHandler(post, cardElement){
+  const postId = post.post_id;
+  // find the cardWrap by searching for the card that contains the textarea cap_{id}
+  const textarea = document.getElementById(`cap_${postId}`);
+  if(!textarea){ alert('Không tìm caption'); return; }
+  // collect payload
+  const payload = { post_id: postId };
+  payload['Post Content'] = textarea.value;
+  // time input
+  const timeInput = document.querySelector(`input[type="time"][data-time="${postId}"]`);
+  if(timeInput) payload['Plan Time'] = timeInput.value;
 
-  // caption
-  const captionEl = document.getElementById(`cap_${id}`);
-  payload['Post Content'] = captionEl ? captionEl.value : (originalPost.caption || '');
-
-  // time
-  const timeEl = document.getElementById(`time_${id}`);
-  if(timeEl) payload['Plan Time'] = timeEl.value;
-
-  // read dynamic fields by data-field attributes
-  // find selects/inputs inside same card
-  const cardWrap = document.querySelector(`#postList div.card-wrap > div.card`); // fallback (we will just read by IDs/attributes)
-  // better: read fields by input/select names relative to post id
-  // available keys: topic, goal, style, audience, format (we used data-field on selects)
-  ['topic','goal','style','audience','format'].forEach(k=>{
-    // query select with data-field=k
-    const sel = document.querySelector(`#postList select[data-field="${k}"]`);
-    if(sel) payload[k] = sel.value;
-    else {
-      // fallback: input with data-field
-      const inp = document.querySelector(`#postList input[data-field="${k}"]`);
-      if(inp) payload[k] = inp.value;
+  // fields selects/inputs (data-field + data-post)
+  document.querySelectorAll(`[data-post="${postId}"]`).forEach(el=>{
+    const key = el.getAttribute('data-field');
+    if(!key) return;
+    if(el.tagName.toLowerCase() === 'select' || el.tagName.toLowerCase() === 'input'){
+      // map to sheet columns naming if necessary
+      if(key === 'topic') payload['Topic'] = el.value;
+      else if(key === 'goal') payload["Post's goal"] = el.value;
+      else if(key === 'style') payload['Desired style'] = el.value;
+      else if(key === 'audience') payload['Target audience'] = el.value;
+      else if(key === 'format') payload['Output Format'] = el.value;
+      else payload[key] = el.value;
     }
   });
-
-  // also search specific inputs created with id patterns: topic_<id> etc. (older code)
-  const tryIdKeys = [
-    {id:`topic_${id}`, key:'Topic'},
-    {id:`goal_${id}`, key:"Post's goal"},
-    {id:`style_${id}`, key:'Desired style'},
-    {id:`aud_${id}`, key:'Target audience'},
-    {id:`fmt_${id}`, key:'Output Format'},
-    {id:`tags_${id}`, key:'Hastag'}
-  ];
-  tryIdKeys.forEach(t=>{
-    const el = document.getElementById(t.id);
-    if(el) payload[t.key] = el.value;
-  });
-
-  // also include Hastag if present
-  const tagsSel = document.querySelector(`#postList input[id^="tags_"], #postList select[data-field="hashtags"]`);
-  if(tagsSel) payload['Hastag'] = tagsSel.value;
 
   // send update
   try{
@@ -404,55 +393,49 @@ async function savePost(originalPost){
       body: JSON.stringify(payload)
     });
     if(!res.ok) throw new Error('HTTP ' + res.status);
-    alert('✅ Đã cập nhật post #' + id);
-    // refresh posts to reflect updated sheet
-    refreshAll();
+    alert('✅ Cập nhật thành công');
+    await refreshAll(); // reflect changes
   }catch(err){
-    console.error('savePost', err);
+    console.error('saveHandler', err);
     alert('Lưu thất bại: ' + err.message);
   }
 }
 
-/* ---- rewrite using AI endpoint ---- */
-async function rewritePost(id, textarea){
+/* Rewrite handler (call AI) */
+async function rewriteHandler(postId, textarea){
   const overlay = document.getElementById('overlay');
-  overlay.style.display = 'flex';
-  const original = textarea.value;
-  textarea.value = '⏳ Đang viết lại bằng AI...';
   try{
+    overlay.style.display = 'flex';
     const res = await fetch(API_REWRITE, {
       method:'POST',
       headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ post_id: id })
+      body: JSON.stringify({ post_id: postId })
     });
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
     if(json.caption){
       textarea.value = json.caption;
-      updateStats(id, json.caption);
+      updateStats(postId, json.caption);
     } else {
-      textarea.value = original;
-      throw new Error('Rewrite: API trả về không có caption');
+      throw new Error('API rewrite trả về không có caption');
     }
   }catch(err){
-    console.error('rewritePost', err);
-    textarea.value = original;
+    console.error('rewriteHandler', err);
     alert('Rewrite thất bại: ' + err.message);
   }finally{
     overlay.style.display = 'none';
   }
 }
 
-/* ---- refresh both fields + posts ---- */
+/* refresh both fields + posts */
 async function refreshAll(){
-  // load fields first (so dropdowns will be ready), then posts
   await loadFields();
   await loadPosts();
 }
 
-/* ---- init on load ---- */
-window.addEventListener('load', ()=> {
-  // start by refreshing all
+/* init */
+document.getElementById('btnRefresh').addEventListener('click', refreshAll);
+window.addEventListener('load', ()=>{
   refreshAll();
 });
 </script>
