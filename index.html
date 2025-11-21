@@ -1,186 +1,301 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8" />
-<title>Content Dashboard V3 — Notion Style</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Content Dashboard V3 — Notion-like (Responsive)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-    body {
-        font-family: Inter, sans-serif;
-        background: #f6f6f6;
-        margin: 0;
-        padding: 20px;
-    }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-    }
-
-    .title {
-        font-size: 24px;
-        font-weight: 700;
-    }
-
-    .filters button {
-        border: 1px solid #ddd;
-        background: white;
-        padding: 6px 12px;
-        border-radius: 20px;
-        margin-right: 6px;
-        cursor: pointer;
-    }
-
-    .filters button.active {
-        background: #2563eb;
-        color: white;
-        border-color: #2563eb;
-    }
-
-    .card {
-        background: white;
-        padding: 18px;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-        margin-bottom: 28px;
-        border-left: 6px solid #e5e7eb;
-    }
-
-    .platform-facebook { border-left-color: #1877f2; }
-    .platform-instagram { border-left-color: #d62976; }
-    .platform-tiktok { border-left-color: #000; }
-
-    .media-preview {
-        margin: 12px 0;
-        border-radius: 10px;
-        max-width: 260px;
-        overflow: hidden;
-        background: #f1f1f1;
-    }
-
-    .media-preview img, .media-preview video {
-        width: 100%;
-        border-radius: 10px;
-    }
-
-    .caption-box {
-        width: 100%;
-        min-height: 120px;
-        padding: 12px;
-        border-radius: 8px;
-        border: 1px solid #ddd;
-        font-size: 14px;
-    }
-
-    .btn {
-        padding: 8px 16px;
-        border-radius: 8px;
-        border: none;
-        cursor: pointer;
-        margin-right: 6px;
-    }
-    .btn-edit { background: #e5e7eb; }
-    .btn-update { background: #2563eb; color: white; }
-    .btn-rewrite { background: #16a34a; color: white; }
-
+  :root{
+    --bg:#f6f7fa;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --accent:#2563eb;
+    --facebook:#e7f0ff;
+    --instagram:#fff0f6;
+    --tiktok:#f5fff9;
+    --radius:12px;
+    --shadow: 0 6px 18px rgba(14,30,37,0.06);
+  }
+  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  .wrap{max-width:1100px;margin:26px auto;padding:18px;}
+  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+  h1{font-size:20px;margin:0}
+  .controls{display:flex;gap:8px;align-items:center}
+  .btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;border:0;cursor:pointer;box-shadow: none}
+  .btn.secondary{background:white;color:#111;border:1px solid #e6e8ee}
+  .filters{display:flex;gap:8px;align-items:center}
+  .chip{padding:8px 12px;border-radius:999px;border:1px solid transparent;background:white;cursor:pointer;font-size:14px}
+  .chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+  /* cards */
+  .list{display:flex;flex-direction:column;gap:18px;margin-top:12px}
+  .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;display:flex;gap:16px;align-items:flex-start}
+  .card .left{width:240px;min-width:160px}
+  .card .right{flex:1}
+  .meta{font-size:13px;color:var(--muted);margin-bottom:8px}
+  .title{font-weight:600;margin:0 0 8px 0;font-size:16px}
+  /* media */
+  .media-frame{width:100%;height:160px;background:#fafafa;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .media-frame img,.media-frame video{width:100%;height:100%;object-fit:contain;display:block}
+  /* inputs */
+  textarea{width:100%;min-height:120px;padding:12px;border-radius:8px;border:1px solid #e6e8ee;font-size:14px;resize:vertical}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .small{font-size:13px;color:var(--muted)}
+  .actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .btn-sm{padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
+  .btn-edit{background:#f1f5f9;}
+  .btn-rewrite{background:#f59e0b;color:#fff}
+  .btn-save{background:#10b981;color:#fff}
+  /* platform colors on left */
+  .platform-facebook .card{border-left:8px solid #1877f2}
+  .platform-instagram .card{border-left:8px solid #d62976}
+  .platform-tiktok .card{border-left:8px solid #111}
+  /* responsive */
+  @media (max-width:800px){
+    .card{flex-direction:column}
+    .card .left{width:100%;order:1}
+    .card .right{order:2}
+    .media-frame{height:220px}
+    .grid{grid-template-columns:1fr}
+    header{flex-direction:column;align-items:flex-start;gap:12px}
+  }
+  /* tiny UI */
+  .badge{display:inline-block;padding:6px 8px;border-radius:8px;background:#f3f4f6;color:#111;font-size:12px;margin-left:6px}
+  .stat{display:inline-flex;gap:8px;align-items:center;margin-right:8px;color:var(--muted);font-size:13px}
 </style>
 </head>
-
 <body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">CD</div>
+      <div>
+        <h1>Content Dashboard V3 — Notion-like</h1>
+        <div class="small">Duyệt & chỉnh sửa nội dung — responsive • preview ảnh/video • rewrite AI</div>
+      </div>
+    </div>
 
-<div class="header">
-    <div class="title">📘 Content Dashboard V3 — Notion Style</div>
-    <button class="btn" onclick="loadPosts()">🔄 Refresh</button>
+    <div class="controls">
+      <div class="filters" id="filterBar">
+        <div class="chip active" data-plat="all" onclick="applyFilter('all', this)">Tất cả</div>
+        <div class="chip" data-plat="Facebook" onclick="applyFilter('Facebook', this)">Facebook</div>
+        <div class="chip" data-plat="Instagram" onclick="applyFilter('Instagram', this)">Instagram</div>
+        <div class="chip" data-plat="Tiktok" onclick="applyFilter('Tiktok', this)">TikTok</div>
+      </div>
+      <button class="btn" onclick="loadPosts()">🔄 Refresh</button>
+    </div>
+  </header>
+
+  <main id="listArea">
+    <div id="status" style="padding:18px;color:var(--muted)">⏳ Chưa tải dữ liệu — nhấn Refresh</div>
+    <div class="list" id="postList"></div>
+  </main>
 </div>
 
-<div class="filters">
-    <button class="active" onclick="filterPlatform('all')">Tất cả</button>
-    <button onclick="filterPlatform('Facebook')">Facebook</button>
-    <button onclick="filterPlatform('Instagram')">Instagram</button>
-    <button onclick="filterPlatform('Tiktok')">Tiktok</button>
-</div>
+<script>
+/* Config API endpoints */
+const API_GET = "https://pfktja.ezn8n.com/webhook/api/posts";
+const API_UPDATE = "https://pfktja.ezn8n.com/webhook/api/update";
+const API_REWRITE = "https://pfktja.ezn8n.com/webhook/api/rewrite";
 
-<div id="postsContainer"></div>
-
-<script defer>
-console.log("Dashboard script loaded.");
-
-const API_URL = "https://pfktja.ezn8n.com/webhook/api/posts";
-
-async function loadPosts() {
-    console.log("Fetching posts…");
-
-    try {
-        const res = await fetch(API_URL);
-        const data = await res.json();
-
-        console.log("API Response:", data);
-
-        if (!data.posts || data.posts.length === 0) {
-            document.getElementById("postsContainer").innerHTML =
-                "<p>Không có bài viết hôm nay.</p>";
-            return;
-        }
-
-        renderPosts(data.posts);
-
-    } catch (err) {
-        console.error("Fetch error:", err);
-        document.getElementById("postsContainer").innerHTML =
-            "<p style='color:red'>Lỗi tải dữ liệu API</p>";
-    }
+/* util media url fallback */
+function mediaUrlFrom(post){
+  if(post.media_url) return post.media_url;
+  const id = post.media_id || post.Image || post.Video;
+  if(!id) return null;
+  // if video -> preview path
+  if((post.media_type || "").toLowerCase().includes("video") || /\.mp4|\.mov|\.webm$/i.test(id)){
+    return `https://drive.google.com/file/d/${id}/preview`;
+  }
+  // image
+  // support if id is full link
+  if(id.includes("drive.google.com")){
+    const m = id.match(/\/d\/([^\/]+)/);
+    if(m) return `https://drive.google.com/uc?export=view&id=${m[1]}`;
+  }
+  return `https://drive.google.com/uc?export=view&id=${id}`;
 }
 
-function renderPosts(posts) {
-    const container = document.getElementById("postsContainer");
-    container.innerHTML = "";
+/* load posts */
+async function loadPosts(){
+  const st = document.getElementById('status');
+  st.innerHTML = '⏳ Đang tải...';
+  try{
+    const res = await fetch(API_GET, { cache: "no-store" });
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const data = await res.json();
+    if(!data || !Array.isArray(data.posts)) throw new Error('Response không có posts[]');
+    renderList(data.posts);
+    st.innerHTML = `✅ Đã tải ${data.posts.length} bài`;
+  }catch(err){
+    console.error(err);
+    st.innerHTML = `<div style="color:#b91c1c">Lỗi tải dữ liệu: ${err.message}</div>`;
+    document.getElementById('postList').innerHTML = '';
+  }
+}
 
-    posts.forEach(post => {
-        const div = document.createElement("div");
-        div.className = `card platform-${post.platform.toLowerCase()}`;
+/* render */
+function renderList(posts){
+  const wrap = document.getElementById('postList');
+  wrap.innerHTML = '';
+  posts.forEach(p=>{
+    const outer = document.createElement('div');
+    outer.className = 'platform-'+(p.platform||'').toLowerCase();
 
-        div.innerHTML = `
-            <h3>#${post.post_id} — ${post.title}</h3>
-            <div><b>Page:</b> ${post.page} — <b>${post.platform}</b></div>
-            <div><b>Ngày:</b> ${post.plan_date} — <b>Giờ:</b> ${post.plan_time}</div>
+    const card = document.createElement('div');
+    card.className = 'card';
 
-            <div class="media-preview">
-                ${post.media_url ? `<img src="${post.media_url}" />` : "Không có media"}
-            </div>
+    // left
+    const left = document.createElement('div');
+    left.className = 'left';
+    left.innerHTML = `
+      <div class="meta">Post ID <span class="badge">${p.post_id}</span></div>
+      <div style="font-weight:600;margin-bottom:8px">${p.title||''}</div>
+      <div class="meta">${p.page||''} • <strong>${p.platform||''}</strong></div>
+      <div class="meta">Ngày: ${p.plan_date || '-'} • Giờ: <input type="time" id="time_${p.post_id}" value="${(p.plan_time||'').slice(0,5)}" /></div>
+      <div class="media-preview" style="margin-top:12px;">
+        ${renderMediaHtml(p)}
+      </div>
+      <div style="margin-top:8px;font-size:13px;color:var(--muted)">${p.hashtags || ''}</div>
+    `;
 
-            <b>Caption</b>
-            <textarea class="caption-box" id="cap_${post.post_id}">${post.caption || ""}</textarea>
+    // right
+    const right = document.createElement('div');
+    right.className = 'right';
+    right.innerHTML = `
+      <div class="title">${p.title||''}</div>
+      <div class="meta">Topic • Post's goal • Style • Audience • Output Format</div>
+      <div class="grid" style="margin-top:8px">
+        <input id="topic_${p.post_id}" placeholder="Topic" value="${escapeHtml(p.topic||'')}"/>
+        <input id="goal_${p.post_id}" placeholder="Post's goal" value="${escapeHtml(p["Post's goal"]||p.post_goal||'')}"/>
+        <input id="style_${p.post_id}" placeholder="Desired style" value="${escapeHtml(p['Desired style']||p.style||'')}"/>
+        <input id="aud_${p.post_id}" placeholder="Target audience" value="${escapeHtml(p['Target audience']||p.audience||'')}"/>
+        <input id="fmt_${p.post_id}" placeholder="Output Format" value="${escapeHtml(p['Output Format']||p.output||'')}"/>
+        <input id="tags_${p.post_id}" placeholder="Hashtags" value="${escapeHtml(p.hashtags||p.Hastag||'')}"/>
+      </div>
 
-            <br><br>
+      <div style="margin-top:12px"><b>Caption</b></div>
+      <textarea id="cap_${p.post_id}">${escapeHtml(p.caption || p['Post Content'] || '')}</textarea>
+      <div class="small" style="margin-top:8px">Số từ: <span id="wc_${p.post_id}">0</span> • Ký tự: <span id="cc_${p.post_id}">0</span></div>
 
-            <button class="btn btn-edit" onclick="editPost(${post.post_id})">✏️ Edit</button>
-            <button class="btn btn-rewrite" onclick="rewrite(${post.post_id})">✨ Rewrite</button>
-            <button class="btn btn-update" onclick="updatePost(${post.post_id})">💾 Lưu & Cập nhật</button>
-        `;
+      <div class="actions">
+        <button class="btn-sm btn-edit" onclick="enableEdit(${p.post_id})">✏️ Edit</button>
+        <button class="btn-sm btn-rewrite" onclick="rewritePost(${p.post_id})">🔁 Rewrite</button>
+        <button class="btn-sm btn-save" onclick="savePost(${p.post_id})">💾 Lưu</button>
+      </div>
+    `;
 
-        container.appendChild(div);
+    // assemble
+    card.appendChild(left);
+    card.appendChild(right);
+    outer.appendChild(card);
+    wrap.appendChild(outer);
+
+    // attach events: wordcount
+    const ta = document.getElementById(`cap_${p.post_id}`);
+    updateStats(p.post_id, ta.value);
+    ta.addEventListener('input', (e)=> updateStats(p.post_id, e.target.value));
+  });
+}
+
+/* render media HTML */
+function renderMediaHtml(p){
+  const url = mediaUrlFrom(p);
+  if(!url) return `<div style="padding:12px;color:var(--muted)">No media</div>`;
+  // if video preview
+  if(/\/preview$|\.mp4|\.mov|\.webm/i.test(url) || (p.media_type && p.media_type.toLowerCase().includes('video'))){
+    return `<video controls src="${url}" style="width:100%;height:160px;object-fit:contain"></video>`;
+  }
+  // image
+  return `<img src="${url}" alt="media" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=color:var(--muted);padding:12px'>Không xem được ảnh</div>' />`;
+}
+
+/* escape HTML simple */
+function escapeHtml(str){
+  return String(str||'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+}
+
+/* update stats */
+function updateStats(id, text){
+  const wc = text.trim().length? text.trim().split(/\s+/).length : 0;
+  document.getElementById(`wc_${id}`).innerText = wc;
+  document.getElementById(`cc_${id}`).innerText = text.length;
+}
+
+/* enable edit (focus caption) */
+function enableEdit(id){
+  const ta = document.getElementById(`cap_${id}`);
+  ta.focus();
+}
+
+/* rewrite by AI — shows loading */
+async function rewritePost(id){
+  const ta = document.getElementById(`cap_${id}`);
+  const old = ta.value;
+  ta.value = '⏳ Đang gọi AI...';
+  try{
+    const res = await fetch(API_REWRITE, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ post_id: id })
     });
+    if(!res.ok) throw new Error('Rewrite fail '+res.status);
+    const json = await res.json();
+    if(json.caption) ta.value = json.caption;
+    else ta.value = old;
+  }catch(err){
+    console.error(err);
+    ta.value = old;
+    alert('Rewrite thất bại: '+err.message);
+  }
 }
 
-function filterPlatform(platform) {
-    document.querySelectorAll(".filters button").forEach(btn => btn.classList.remove("active"));
-    event.target.classList.add("active");
-
-    const cards = document.querySelectorAll(".card");
-    cards.forEach(c => {
-        if (platform === "all") return (c.style.display = "block");
-        c.style.display = c.classList.contains(`platform-${platform.toLowerCase()}`) ? "block" : "none";
+/* save post -> call API_UPDATE */
+async function savePost(id){
+  const payload = {
+    post_id: id,
+    'Post Content': document.getElementById(`cap_${id}`).value,
+    'Plan Time': document.getElementById(`time_${id}`).value,
+    Topic: document.getElementById(`topic_${id}`).value,
+    "Post's goal": document.getElementById(`goal_${id}`).value,
+    "Desired style": document.getElementById(`style_${id}`).value,
+    "Target audience": document.getElementById(`aud_${id}`).value,
+    "Output Format": document.getElementById(`fmt_${id}`).value,
+    Hastag: document.getElementById(`tags_${id}`).value
+  };
+  try{
+    const res = await fetch(API_UPDATE, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify(payload)
     });
+    if(!res.ok) throw new Error('Update failed '+res.status);
+    alert('Đã cập nhật!');
+  }catch(err){
+    console.error(err);
+    alert('Lưu thất bại: '+err.message);
+  }
 }
 
-loadPosts();
+/* filtering */
+function applyFilter(platform, el){
+  // ui chip active
+  document.querySelectorAll('#filterBar .chip').forEach(c=>c.classList.remove('active'));
+  if(el) el.classList.add('active');
+  const cards = document.querySelectorAll('#postList > div');
+  cards.forEach(card=>{
+    if(platform==='all'){ card.style.display='block'; return;}
+    card.style.display = card.classList.contains('platform-'+platform.toLowerCase()) ? 'block' : 'none';
+  });
+}
+
+/* init */
+window.addEventListener('load', ()=> {
+  // auto load
+  loadPosts();
+});
 </script>
-
 </body>
 </html>
