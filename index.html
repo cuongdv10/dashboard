@@ -332,22 +332,20 @@ function renderPost(post){
   const body = create('div','card-body');
 // MEDIA PREVIEW
 const mediaWrap = create('div','media');
-const mediaUrl = mediaUrlFromId(post.media_id);
+
+// Ưu tiên media_url từ API
+const mediaUrl = post.media_url || (post.media_id ? mediaUrlFromId(post.media_id) : null);
 
 if (mediaUrl) {
 
-    // Video preview
-    if (post.media_id.match(/\.(mp4|mov|webm)$/i)) {
-
+    if (/\.(mp4|mov|webm)$/i.test(mediaUrl)) {
         const v = create('video');
         v.controls = true;
         v.src = mediaUrl;
         v.style.maxWidth = '100%';
         v.style.borderRadius = '8px';
         mediaWrap.appendChild(v);
-
     } else {
-        // Image preview
         const img = create('img');
         img.src = mediaUrl;
         img.alt = post.title;
@@ -356,16 +354,13 @@ if (mediaUrl) {
 
         img.onerror = function () {
             this.remove();
-            mediaWrap.innerHTML =
-                `<div style="padding:12px;color:gray;">Không xem được ảnh</div>`;
+            mediaWrap.innerHTML = `<div style="padding:12px;color:gray;">Không xem được ảnh</div>`;
         };
 
         mediaWrap.appendChild(img);
     }
-
 } else {
-    mediaWrap.innerHTML =
-        `<div style="padding:12px;color:gray;">Không có media</div>`;
+    mediaWrap.innerHTML = `<div style="padding:12px;color:gray;">Không có media</div>`;
 }
 
   // content area
