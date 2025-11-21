@@ -29,15 +29,13 @@ h1 {
   font-weight: bold;
   margin-bottom: 10px;
 }
-select, textarea {
+textarea {
   width: 100%;
   padding: 10px;
   border-radius: 8px;
-  margin-top: 8px;
+  margin-top: 12px;
   border: 1px solid #ccc;
-}
-textarea {
-  height: 120px;
+  height: 150px;
 }
 .button {
   margin-top: 15px;
@@ -52,9 +50,6 @@ textarea {
 .button:active {
   opacity: 0.7;
 }
-.caption-choice {
-  margin-top: 10px;
-}
 </style>
 </head>
 
@@ -65,8 +60,8 @@ textarea {
 <div id="posts"></div>
 
 <script>
-const API_GET_POSTS = "https://pfktja.ezn8n.com/api/posts";
-const API_UPDATE_POST = "https://pfktja.ezn8n.com/api/update";
+const API_GET_POSTS = "https://pfktja.ezn8n.com/webhook/api/posts";
+const API_UPDATE_POST = "https://pfktja.ezn8n.com/webhook/api/update";
 
 /* Load posts */
 async function loadPosts() {
@@ -99,26 +94,14 @@ function renderPosts(posts) {
             <p><b>Page:</b> ${post.page} — <b>${post.platform}</b></p>
             <p><b>Ngày:</b> ${post.plan_date} — <b>Giờ:</b> ${post.plan_time}</p>
 
-            <label>📝 Chọn Caption</label>
-            <select class="caption-choice" onchange="updateTextarea(this, '${post.post_id}')">
-                <option value="">— Chọn Caption —</option>
-                ${post.captionA ? `<option value="${encodeURIComponent(post.captionA)}">Caption A</option>` : ""}
-                ${post.captionB ? `<option value="${encodeURIComponent(post.captionB)}">Caption B</option>` : ""}
-                ${post.captionC ? `<option value="${encodeURIComponent(post.captionC)}">Caption C</option>` : ""}
-            </select>
-
-            <textarea id="caption-${post.post_id}" placeholder="Chọn caption ở mục trên hoặc chỉnh sửa tại đây"></textarea>
+            <label>📝 Caption</label>
+            <textarea id="caption-${post.post_id}">${post.caption || ""}</textarea>
 
             <div class="button" onclick='savePost(${JSON.stringify(post)})'>💾 Lưu & Cập nhật</div>
         `;
 
         container.appendChild(div);
     });
-}
-
-function updateTextarea(select, postId) {
-    const value = decodeURIComponent(select.value);
-    document.getElementById("caption-" + postId).value = value;
 }
 
 /* Save post */
