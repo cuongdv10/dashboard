@@ -118,7 +118,7 @@
         // Load posts from n8n API
         async reloadPosts() {
           try {
-            const res = await fetch("https://pfktja.ezn8n.com/webhook/api/posts");
+            const res = await fetch("https://pfktja.ezn8n.com/webhook-test/api/posts");
             const data = await res.json();
 
             this.posts = data.posts.map(p => ({
