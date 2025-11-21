@@ -137,7 +137,7 @@
         // Load image/video from n8n
         loadMedia(post) {
           if (!post.media_id) return;
-          post.media_url = `https:/pfktja.ezn8n.com/webhook/media?file_id=${post.media_id}`;
+          post.media_url = `https:/pfktja.ezn8n.com/webhook-test/media?file_id=${post.media_id}`;
         },
 
         // Select caption A/B/C
@@ -152,7 +152,7 @@
             return;
           }
 
-          await fetch("https://pfktja.ezn8n.com/webhook/submit-review", {
+          await fetch("https://pfktja.ezn8n.com/webhook-test/submit-review", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
