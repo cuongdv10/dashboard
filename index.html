@@ -1,186 +1,163 @@
 <!DOCTYPE html>
-<html lang="vi" x-data="dashboardApp()" class="bg-gray-100">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Content Review Dashboard 2.0</title>
+<meta charset="UTF-8">
+<title>Content Dashboard V2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Alpine -->
-  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-  <!-- Animate style -->
-  <style>
-    .fade-in { animation: fadeIn .4s ease-in-out; }
-    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
-  </style>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f5f7fb;
+  margin: 0;
+  padding: 20px;
+}
+h1 {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+.post {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 20px;
+  margin-bottom: 25px;
+}
+.row-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+select, textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+}
+textarea {
+  height: 120px;
+}
+.button {
+  margin-top: 15px;
+  padding: 12px;
+  background: #007bff;
+  color: white;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+}
+.button:active {
+  opacity: 0.7;
+}
+.caption-choice {
+  margin-top: 10px;
+}
+</style>
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body>
 
-  <!-- HEADER -->
-  <header class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-50">
-    <h1 class="text-2xl font-bold">📋 Content Review Dashboard 2.0</h1>
+<h1>📋 Content Approval Dashboard V2</h1>
 
-    <div class="flex gap-3">
-      <button @click="reloadPosts()"
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-        Reload Posts
-      </button>
-      <button @click="toggleDark()"
-        class="px-3 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
-        🌙
-      </button>
-    </div>
-  </header>
+<div id="posts"></div>
 
-  <!-- CONTENT -->
-  <main class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1">
+<script>
+const API_GET_POSTS = "https://pfktja.ezn8n.com/api/posts";
+const API_UPDATE_POST = "https://pfktja.ezn8n.com/api/update";
 
-    <!-- CARD -->
-    <template x-for="post in posts" :key="post.post_id">
-      <div class="bg-white shadow-md rounded-xl p-5 fade-in flex flex-col">
+/* Load posts */
+async function loadPosts() {
+    try {
+        const res = await fetch(API_GET_POSTS);
+        const data = await res.json();
 
-        <!-- MEDIA -->
-        <div class="w-full h-56 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
-          <template x-if="post.media_url">
-            <img :src="post.media_url"
-                 class="w-full h-full object-cover"
-                 @error="post.media_url=null" />
-          </template>
-
-          <template x-if="!post.media_url">
-            <div class="text-gray-500 text-sm">
-              ⏳ Loading media...
-              <button @click="loadMedia(post)" class="underline text-blue-600">
-                reload
-              </button>
-            </div>
-          </template>
-        </div>
-
-        <!-- META -->
-        <h2 class="text-xl font-semibold mt-3" x-text="post.title"></h2>
-        <p class="text-gray-500 text-sm" x-text="'📆 ' + post.plan_date + ' • ' + post.plan_time"></p>
-        <p class="text-gray-500 text-sm" x-text="'🌐 ' + post.platform + ' — ' + post.page"></p>
-
-        <!-- CAPTIONS -->
-        <div class="mt-4">
-          <h3 class="font-bold mb-2">📝 AI Captions</h3>
-
-          <template x-for="c in ['A','B','C']">
-            <button 
-              @click="selectCaption(post, c)"
-              class="block w-full text-left border rounded p-3 mb-2 hover:bg-gray-50"
-              :class="post.selected === c ? 'border-blue-600 bg-blue-50' : ''">
-              <span class="font-bold">Version {{c}}</span>
-              <p class="text-sm mt-1" x-text="post['caption' + c]"></p>
-            </button>
-          </template>
-        </div>
-
-        <!-- ACTION BUTTONS -->
-        <div class="mt-4 flex gap-3">
-          <button @click="approve(post)"
-                  class="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700">
-            ✔ Approve
-          </button>
-
-          <button @click="reject(post)"
-                  class="flex-1 bg-red-600 text-white p-2 rounded hover:bg-red-700">
-            ✖ Reject
-          </button>
-        </div>
-
-      </div>
-    </template>
-
-  </main>
-
-
-  <!-- ALPINE APP LOGIC -->
-  <script>
-    function dashboardApp() {
-      return {
-
-        posts: [],
-
-        async init() {
-          await this.reloadPosts();
-        },
-
-        // Toggle dark mode
-        toggleDark() {
-          document.documentElement.classList.toggle('dark');
-        },
-
-        // Load posts from n8n API
-        async reloadPosts() {
-          try {
-            const res = await fetch("https://pfktja.ezn8n.com/webhook-test/api/posts");
-            const data = await res.json();
-
-            this.posts = data.posts.map(p => ({
-              ...p,
-              selected: null,
-              media_url: null
-            }));
-
-            this.posts.forEach(p => this.loadMedia(p));
-
-          } catch (e) {
-            alert("⚠ Không tải được danh sách bài!");
-          }
-        },
-
-        // Load image/video from n8n
-        loadMedia(post) {
-          if (!post.media_id) return;
-          post.media_url = `https:/pfktja.ezn8n.com/webhook-test/media?file_id=${post.media_id}`;
-        },
-
-        // Select caption A/B/C
-        selectCaption(post, version) {
-          post.selected = version;
-        },
-
-        // Approve
-        async approve(post) {
-          if (!post.selected) {
-            alert("⚠ Hãy chọn 1 version caption trước!");
+        if (!data.posts || data.posts.length === 0) {
+            document.getElementById("posts").innerHTML = "<p>Không có bài nào hôm nay.</p>";
             return;
-          }
-
-          await fetch("https://pfktja.ezn8n.com/webhook-test/submit-review", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              post_id: post.post_id,
-              action: "approve",
-              caption_version: post.selected
-            })
-          });
-
-          alert("Đã duyệt!");
-        },
-
-        // Reject
-        async reject(post) {
-          await fetch("https://pfktja.ezn8n.com/webhook/submit-review", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              post_id: post.post_id,
-              action: "reject"
-            })
-          });
-
-          alert("Đã từ chối!");
         }
-      }
+
+        renderPosts(data.posts);
+    } catch (e) {
+        console.error(e);
+        alert("Không thể tải danh sách bài từ n8n API!");
     }
-  </script>
+}
+
+function renderPosts(posts) {
+    const container = document.getElementById("posts");
+    container.innerHTML = "";
+
+    posts.forEach(post => {
+        const div = document.createElement("div");
+        div.className = "post";
+
+        div.innerHTML = `
+            <div class="row-title">#${post.post_id} — ${post.title}</div>
+            <p><b>Page:</b> ${post.page} — <b>${post.platform}</b></p>
+            <p><b>Ngày:</b> ${post.plan_date} — <b>Giờ:</b> ${post.plan_time}</p>
+
+            <label>📝 Chọn Caption</label>
+            <select class="caption-choice" onchange="updateTextarea(this, '${post.post_id}')">
+                <option value="">— Chọn Caption —</option>
+                ${post.captionA ? `<option value="${encodeURIComponent(post.captionA)}">Caption A</option>` : ""}
+                ${post.captionB ? `<option value="${encodeURIComponent(post.captionB)}">Caption B</option>` : ""}
+                ${post.captionC ? `<option value="${encodeURIComponent(post.captionC)}">Caption C</option>` : ""}
+            </select>
+
+            <textarea id="caption-${post.post_id}" placeholder="Chọn caption ở mục trên hoặc chỉnh sửa tại đây"></textarea>
+
+            <div class="button" onclick='savePost(${JSON.stringify(post)})'>💾 Lưu & Cập nhật</div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+function updateTextarea(select, postId) {
+    const value = decodeURIComponent(select.value);
+    document.getElementById("caption-" + postId).value = value;
+}
+
+/* Save post */
+async function savePost(post) {
+    const caption = document.getElementById("caption-" + post.post_id).value;
+
+    if (!caption.trim()) {
+        alert("Bạn chưa nhập caption!");
+        return;
+    }
+
+    const payload = {
+        post_id: post.post_id,
+        caption: caption,
+        status: "approved"
+    };
+
+    try {
+        const res = await fetch(API_UPDATE_POST, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+            alert("Đã lưu thành công!");
+        } else {
+            alert("Có lỗi khi lưu!");
+        }
+    } catch (e) {
+        alert("Không thể gửi dữ liệu về n8n!");
+        console.error(e);
+    }
+}
+
+loadPosts();
+</script>
 
 </body>
 </html>
