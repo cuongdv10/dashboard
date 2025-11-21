@@ -118,7 +118,7 @@
         // Load posts from n8n API
         async reloadPosts() {
           try {
-            const res = await fetch("https://YOUR-N8N-URL/webhook/api/posts");
+            const res = await fetch("https://pfktja.ezn8n.com/webhook/api/posts");
             const data = await res.json();
 
             this.posts = data.posts.map(p => ({
@@ -137,7 +137,7 @@
         // Load image/video from n8n
         loadMedia(post) {
           if (!post.media_id) return;
-          post.media_url = `https://YOUR-N8N-URL/webhook/media?file_id=${post.media_id}`;
+          post.media_url = `https:/pfktja.ezn8n.com/webhook/media?file_id=${post.media_id}`;
         },
 
         // Select caption A/B/C
@@ -152,7 +152,7 @@
             return;
           }
 
-          await fetch("https://YOUR-N8N-URL/webhook/submit-review", {
+          await fetch("https://pfktja.ezn8n.com/webhook/submit-review", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -167,7 +167,7 @@
 
         // Reject
         async reject(post) {
-          await fetch("https://YOUR-N8N-URL/webhook/submit-review", {
+          await fetch("https://pfktja.ezn8n.com/webhook/submit-review", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
