@@ -1,139 +1,173 @@
 <!DOCTYPE html>
-<html lang="vi" x-data="dashboardApp()" class="h-full bg-gray-100">
+<html lang="vi" x-data="dashboardApp()" class="bg-gray-100">
 <head>
-  <meta charset="UTF-8" />
-  <title>Content Review Dashboard</title>
+  <meta charset="UTF-8">
+  <title>Content Review Dashboard 2.0</title>
+
+  <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Alpine -->
   <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- Animate style -->
+  <style>
+    .fade-in { animation: fadeIn .4s ease-in-out; }
+    @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+  </style>
 </head>
 
-<body class="h-full">
+<body class="min-h-screen flex flex-col">
 
-  <!-- Header -->
-  <header class="bg-white shadow p-4 flex justify-between items-center">
-    <h1 class="text-2xl font-bold">📋 Content Review Dashboard</h1>
-    <button @click="reloadPosts()" class="px-4 py-2 bg-blue-600 text-white rounded-lg">
-      Reload Posts
-    </button>
+  <!-- HEADER -->
+  <header class="bg-white shadow p-4 flex justify-between items-center sticky top-0 z-50">
+    <h1 class="text-2xl font-bold">📋 Content Review Dashboard 2.0</h1>
+
+    <div class="flex gap-3">
+      <button @click="reloadPosts()"
+        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        Reload Posts
+      </button>
+      <button @click="toggleDark()"
+        class="px-3 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+        🌙
+      </button>
+    </div>
   </header>
 
-  <!-- MAIN -->
-  <main class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+  <!-- CONTENT -->
+  <main class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex-1">
 
-    <!-- Card Post -->
+    <!-- CARD -->
     <template x-for="post in posts" :key="post.post_id">
-      <div class="bg-white shadow rounded-lg p-4 flex flex-col">
+      <div class="bg-white shadow-md rounded-xl p-5 fade-in flex flex-col">
 
-        <!-- Image -->
-        <div class="w-full h-56 bg-gray-200 flex items-center justify-center mb-3 rounded overflow-hidden">
+        <!-- MEDIA -->
+        <div class="w-full h-56 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
           <template x-if="post.media_url">
-            <img :src="post.media_url" class="w-full h-full object-cover" />
+            <img :src="post.media_url"
+                 class="w-full h-full object-cover"
+                 @error="post.media_url=null" />
           </template>
 
           <template x-if="!post.media_url">
-            <span class="text-gray-500">⏳ Loading media...</span>
-          </template>
-        </div>
-
-        <!-- Info -->
-        <h2 class="text-lg font-bold" x-text="post.title"></h2>
-        <p class="text-sm text-gray-500" x-text="'📆 ' + post.plan_date + ' — ' + post.plan_time"></p>
-        <p class="text-sm text-gray-500" x-text="'🌐 ' + post.platform + ' — ' + post.page"></p>
-
-        <!-- Caption Tabs -->
-        <div class="mt-4">
-          <h3 class="font-semibold mb-2">📝 AI Captions</h3>
-
-          <template x-for="version in ['A','B','C']">
-            <div class="mb-2">
-              <button 
-                @click="selectCaption(post, version)"
-                class="w-full text-left p-2 border rounded hover:bg-gray-50"
-                :class="post.selected == version ? 'border-blue-600 bg-blue-50' : ''">
-                <span class="font-bold" x-text="'Version ' + version"></span>
-                <p class="text-sm mt-1" x-text="post['caption' + version]"></p>
+            <div class="text-gray-500 text-sm">
+              ⏳ Loading media...
+              <button @click="loadMedia(post)" class="underline text-blue-600">
+                reload
               </button>
             </div>
           </template>
         </div>
 
-        <!-- Actions -->
-        <div class="mt-4 flex gap-2">
-          <button 
-            @click="approve(post)"
-            class="flex-1 bg-green-600 text-white py-2 rounded">
+        <!-- META -->
+        <h2 class="text-xl font-semibold mt-3" x-text="post.title"></h2>
+        <p class="text-gray-500 text-sm" x-text="'📆 ' + post.plan_date + ' • ' + post.plan_time"></p>
+        <p class="text-gray-500 text-sm" x-text="'🌐 ' + post.platform + ' — ' + post.page"></p>
+
+        <!-- CAPTIONS -->
+        <div class="mt-4">
+          <h3 class="font-bold mb-2">📝 AI Captions</h3>
+
+          <template x-for="c in ['A','B','C']">
+            <button 
+              @click="selectCaption(post, c)"
+              class="block w-full text-left border rounded p-3 mb-2 hover:bg-gray-50"
+              :class="post.selected === c ? 'border-blue-600 bg-blue-50' : ''">
+              <span class="font-bold">Version {{c}}</span>
+              <p class="text-sm mt-1" x-text="post['caption' + c]"></p>
+            </button>
+          </template>
+        </div>
+
+        <!-- ACTION BUTTONS -->
+        <div class="mt-4 flex gap-3">
+          <button @click="approve(post)"
+                  class="flex-1 bg-green-600 text-white p-2 rounded hover:bg-green-700">
             ✔ Approve
           </button>
 
-          <button 
-            @click="reject(post)"
-            class="flex-1 bg-red-600 text-white py-2 rounded">
+          <button @click="reject(post)"
+                  class="flex-1 bg-red-600 text-white p-2 rounded hover:bg-red-700">
             ✖ Reject
           </button>
         </div>
 
       </div>
     </template>
+
   </main>
 
-  <!-- Alpine App -->
+
+  <!-- ALPINE APP LOGIC -->
   <script>
     function dashboardApp() {
       return {
+
         posts: [],
 
         async init() {
-          this.reloadPosts();
+          await this.reloadPosts();
         },
 
+        // Toggle dark mode
+        toggleDark() {
+          document.documentElement.classList.toggle('dark');
+        },
+
+        // Load posts from n8n API
         async reloadPosts() {
-          const res = await fetch("/api/posts");
-          const data = await res.json();
-
-          this.posts = data.posts.map(p => ({
-            ...p,
-            selected: null,
-            media_url: null
-          }));
-
-          this.posts.forEach(p => this.loadMedia(p));
-        },
-
-        async loadMedia(post) {
-          if (!post.media_id) return;
-
           try {
-            post.media_url = `/api/media?file_id=${post.media_id}`;
-          } catch {
-            post.media_url = null;
+            const res = await fetch("https://YOUR-N8N-URL/webhook/api/posts");
+            const data = await res.json();
+
+            this.posts = data.posts.map(p => ({
+              ...p,
+              selected: null,
+              media_url: null
+            }));
+
+            this.posts.forEach(p => this.loadMedia(p));
+
+          } catch (e) {
+            alert("⚠ Không tải được danh sách bài!");
           }
         },
 
+        // Load image/video from n8n
+        loadMedia(post) {
+          if (!post.media_id) return;
+          post.media_url = `https://YOUR-N8N-URL/webhook/media?file_id=${post.media_id}`;
+        },
+
+        // Select caption A/B/C
         selectCaption(post, version) {
           post.selected = version;
         },
 
+        // Approve
         async approve(post) {
           if (!post.selected) {
-            alert("Hãy chọn 1 caption version trước!");
+            alert("⚠ Hãy chọn 1 version caption trước!");
             return;
           }
 
-          await fetch("/api/submit-review", {
+          await fetch("https://YOUR-N8N-URL/webhook/submit-review", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               post_id: post.post_id,
               action: "approve",
-              selected: post.selected
+              caption_version: post.selected
             })
           });
 
-          alert("Approved!");
+          alert("Đã duyệt!");
         },
 
+        // Reject
         async reject(post) {
-          await fetch("/api/submit-review", {
+          await fetch("https://YOUR-N8N-URL/webhook/submit-review", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -142,7 +176,7 @@
             })
           });
 
-          alert("Rejected!");
+          alert("Đã từ chối!");
         }
       }
     }
