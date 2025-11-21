@@ -290,6 +290,13 @@ function metricsFromText(text){
 /* convert media_id to embeddable Google Drive view URL */
 function mediaUrlFromId(id) {
     if (!id) return null;
+
+    // Nếu ID là full URL -> extract ID ra
+    if (id.includes("drive.google.com")) {
+        const match = id.match(/\/d\/(.*)\//);
+        if (match && match[1]) id = match[1];
+    }
+
     return `https://drive.google.com/uc?export=view&id=${id}`;
 }
 
@@ -323,37 +330,43 @@ function renderPost(post){
 
   // body
   const body = create('div','card-body');
-  // media
+// MEDIA PREVIEW
 const mediaWrap = create('div','media');
 const mediaUrl = mediaUrlFromId(post.media_id);
 
 if (mediaUrl) {
 
-    // nếu là video
-    if (/\.(mp4|mov|webm)$/i.test(post.media_id)) {
+    // Video preview
+    if (post.media_id.match(/\.(mp4|mov|webm)$/i)) {
+
         const v = create('video');
         v.controls = true;
         v.src = mediaUrl;
+        v.style.maxWidth = '100%';
+        v.style.borderRadius = '8px';
         mediaWrap.appendChild(v);
 
     } else {
-        // ảnh
+        // Image preview
         const img = create('img');
         img.src = mediaUrl;
-        img.alt = post.title || 'media';
+        img.alt = post.title;
+        img.style.maxWidth = '100%';
+        img.style.borderRadius = '8px';
 
-        img.onerror = function() {
-            this.style.display='none';
-            mediaWrap.innerHTML = '<div style="padding:12px;color:var(--muted)">No preview</div>';
+        img.onerror = function () {
+            this.remove();
+            mediaWrap.innerHTML =
+                `<div style="padding:12px;color:gray;">Không xem được ảnh</div>`;
         };
 
         mediaWrap.appendChild(img);
     }
 
 } else {
-    mediaWrap.innerHTML = '<div style="padding:12px;color:var(--muted)">No media</div>';
+    mediaWrap.innerHTML =
+        `<div style="padding:12px;color:gray;">Không có media</div>`;
 }
-
 
   // content area
   const content = create('div','content');
