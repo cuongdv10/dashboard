@@ -1,598 +1,296 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Content Approval Dashboard V2 — Notion style</title>
+<meta charset="UTF-8" />
+<title>Content Dashboard V3 — Notion Style</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Basic Notion-like fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
-:root{
-  --bg:#f6f7fb;
-  --card:#ffffff;
-  --muted:#6b7280;
-  --accent:#3b82f6;
-  --accent-2:#2563eb;
-  --success:#10b981;
-  --danger:#ef4444;
-  --glass: rgba(255,255,255,0.6);
-  --shadow: 0 8px 20px rgba(16,24,40,0.06);
-  --radius: 12px;
-  --maxwidth: 1100px;
+/* ---------- GLOBAL ---------- */
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f6f7f9;
+  margin: 0;
+  padding: 0;
 }
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  padding:32px;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: linear-gradient(180deg,#f8fafc 0%, var(--bg) 100%);
-  color:#0f172a;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 32px 16px;
 }
-.container{
-  max-width:var(--maxwidth);
-  margin: 0 auto;
+
+/* ---------- HEADER ---------- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
 }
-.header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  margin-bottom:18px;
-}
+
 .title {
-  display:flex;
-  gap:14px;
-  align-items:center;
+  font-size: 26px;
+  font-weight: 600;
 }
-.logo {
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  color:white;
-  width:52px;
-  height:52px;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:800;
-  box-shadow: 0 6px 18px rgba(37,99,235,0.12);
-  font-size:20px;
-}
-.h1 {
-  font-size:20px;
-  font-weight:700;
-}
-.h1 small{display:block;font-weight:500;color:var(--muted);font-size:13px;margin-top:4px}
 
-.toolbar {
-  display:flex;
-  gap:10px;
-  align-items:center;
-}
 .btn {
-  padding:10px 14px;
-  border-radius:10px;
-  background:var(--card);
-  border:1px solid rgba(15,23,42,0.04);
-  box-shadow:var(--shadow);
-  cursor:pointer;
-  display:inline-flex;
-  gap:8px;
-  align-items:center;
-  font-weight:600;
-  color:#0f172a;
-}
-.btn.primary{
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  color:white;
-  border:none;
-  box-shadow: 0 6px 18px rgba(59,130,246,0.14);
-}
-.subtitle {
-  color:var(--muted);
-  font-size:13px;
+  padding: 8px 14px;
+  background: #2563eb;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  border: none;
 }
 
-/* Grid of cards */
-.grid {
-  display:flex;
-  flex-direction:column;
-  gap:18px;
-  margin-top:22px;
+.btn:hover {
+  background: #1d4ed8;
 }
 
-/* Card */
-.card {
-  background:var(--card);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:18px;
-  overflow:hidden;
-  border: 1px solid rgba(15,23,42,0.03);
+/* ---------- FILTERS ---------- */
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
 }
-.card-head{
-  display:flex;
-  gap:12px;
-  align-items:flex-start;
-  justify-content:space-between;
+
+.filter-btn {
+  padding: 6px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  border: 1px solid #ddd;
 }
-.meta {
-  display:flex;
-  gap:14px;
-  align-items:center;
-  color:var(--muted);
-  font-size:13px;
+
+.filter-btn.active {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
 }
-.title-line{
-  font-weight:700;
-  font-size:16px;
-  line-height:1.35;
-  margin-bottom:6px;
+
+/* ---------- POST CARD ---------- */
+.post-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 8%);
 }
-.card-body{
-  margin-top:12px;
-  display:flex;
-  gap:18px;
-  align-items:flex-start;
+
+/* PLATFORM COLORS */
+.platform-facebook { background: #e8f0fe; }
+.platform-instagram { background: #fdf2f8; }
+.platform-tiktok { background: #f0fdfa; }
+
+/* Label */
+.label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 6px;
 }
-.media {
-  width:260px;
-  min-width:160px;
-  max-height:220px;
-  border-radius:10px;
-  overflow:hidden;
-  background:#f3f4f6;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.media img, .media video { width:100%; height:100%; object-fit:cover; display:block; }
-.content {
-  flex:1;
-}
-.label { font-size:13px; color:var(--muted); margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+
+/* Caption box */
 textarea {
-  width:100%;
-  min-height:120px;
-  border-radius:8px;
-  padding:12px;
-  border:1px solid rgba(15,23,42,0.06);
-  font-size:14px;
-  resize:vertical;
-  background: linear-gradient(180deg, rgba(255,255,255,1), rgba(250,250,250,1));
-}
-.controls {
-  display:flex;
-  gap:8px;
-  margin-top:10px;
-  align-items:center;
-}
-.small-btn {
-  padding:8px 10px;
-  border-radius:8px;
-  background:#f8fafc;
-  border:1px solid rgba(15,23,42,0.04);
-  cursor:pointer;
-  font-weight:600;
-  color:#0f172a;
-  display:inline-flex;
-  gap:8px;
-  align-items:center;
-}
-.small-btn.primary {
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  color:white;
-  border:none;
-}
-.metrics {
-  margin-top:12px;
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.metric {
-  background:rgba(15,23,42,0.03);
-  padding:8px 10px;
-  border-radius:8px;
-  font-size:13px;
-  color:#0f172a;
-}
-.spinner{
-  width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.3);border-top-color:white;
-  animation:spin 1s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-/* responsive */
-@media(max-width:880px){
-  .media{ display:none }
-  .card-body{ flex-direction:column }
-}
-.footer {
-  margin-top:30px;
-  color:var(--muted);
-  font-size:13px;
-  text-align:center;
+  width: 100%;
+  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  min-height: 120px;
 }
 
-/* small utilities */
-.kv { font-size:13px; color:var(--muted) }
-.badge { font-size:12px; padding:6px 8px; border-radius:8px; background:#eef2ff; color:var(--accent-2); }
+/* Post Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+select, input[type="text"], input[type="time"] {
+  width: 100%;
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+/* Media */
+.media-box {
+  width: 100%;
+  margin: 12px 0;
+  background: #fafafa;
+  border-radius: 10px;
+  text-align: center;
+  padding: 12px;
+}
+
+.media-box img, .media-box video {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.btn-sm {
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+}
+
+.edit-btn { background: #d1d5db; }
+.rewrite-btn { background: #fbbf24; }
+.save-btn { background: #10b981; }
+
+.wordcount {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #666;
+}
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="header">
-    <div class="title">
-      <div class="logo">CD</div>
-      <div>
-        <div class="h1">Content Approval Dashboard V2</div>
-        <div class="subtitle">Giao diện Notion-like · Tự động load từ n8n · Duyệt & Rewrite bằng AI</div>
-      </div>
-    </div>
 
-    <div class="toolbar">
-      <button class="btn" id="refreshBtn" title="Làm mới (reload từ server)">🔄 Refresh</button>
-      <a class="btn" id="downloadCsv" href="/mnt/data/Content-Planner - Plan.csv" download>📥 Tải CSV</a>
-      <button class="btn primary" id="autoReloadToggle" title="Tự động load mỗi 60s">⏱️ AutoReload: OFF</button>
-    </div>
+<div class="container">
+
+  <div class="header">
+    <div class="title">📘 Content Dashboard V3 — Notion Style</div>
+    <button class="btn" onclick="loadPosts()">🔄 Refresh</button>
   </div>
 
-  <div id="grid" class="grid"></div>
+  <!-- Filters -->
+  <div class="filters">
+    <div class="filter-btn active" onclick="filter('all')">Tất cả</div>
+    <div class="filter-btn" onclick="filter('Facebook')">Facebook</div>
+    <div class="filter-btn" onclick="filter('Instagram')">Instagram</div>
+    <div class="filter-btn" onclick="filter('Tiktok')">TikTok</div>
+  </div>
 
-  <div class="footer">© Content Dashboard · Kết nối: <span class="kv">pfktja.ezn8n.com</span></div>
+  <div id="post-list"></div>
+
 </div>
 
 <script>
-/*
-  Dashboard V2 JS
-  - chỉnh API URLs tại đây
-  - Lưu ý: đường dẫn CSV local đã chèn: /mnt/data/Content-Planner - Plan.csv
-*/
-
-const API_GET = "https://pfktja.ezn8n.com/webhook/api/posts";
+const API_POSTS = "https://pfktja.ezn8n.com/webhook/api/posts";
 const API_UPDATE = "https://pfktja.ezn8n.com/webhook/api/update";
-const API_REWRITE = "https://pfktja.ezn8n.com/webhook/api/rewrite";
 
-/* Local uploaded CSV path (kept as-is per your instruction) */
-const LOCAL_CSV_PATH = "/mnt/data/Content-Planner - Plan.csv";
-
-/* simple helpers */
-const el = sel => document.querySelector(sel);
-const create = (tag, cls) => { const d = document.createElement(tag); if (cls) d.className = cls; return d; };
-
-let autoReload = false;
-let autoReloadTimer = null;
-
-/* compute metrics */
-function metricsFromText(text){
-  const words = text.trim().length ? text.trim().split(/\s+/).length : 0;
-  const chars = text.length;
-  const hashtags = (text.match(/#[\p{L}\p{N}_-]+/gu) || []).length;
-  const hashtagRatio = words ? (hashtags/words).toFixed(3) : 0;
-  // simple sentiment heuristic: positive vs negative word list
-  const pos = ["tuyệt","tốt","yêu","yêu thích","xuất sắc","tốt","miễn phí","ưu đãi","khuyến mãi","hấp dẫn","đẹp","đạt"];
-  const neg = ["không","kém","tệ","lo lắng","hỏng","lỗi","chậm","phàn nàn","khó chịu"];
-  const low = text.toLowerCase();
-  let score = 0;
-  pos.forEach(w=> { if (low.includes(w)) score+=1; });
-  neg.forEach(w=> { if (low.includes(w)) score-=1; });
-  let sentiment = "Neutral";
-  if (score>=2) sentiment = "Positive";
-  else if (score<=-2) sentiment = "Negative";
-  return { words, chars, hashtags, hashtagRatio, sentiment, score };
+/* Load posts */
+async function loadPosts() {
+  const res = await fetch(API_POSTS);
+  const data = await res.json();
+  renderPosts(data.posts);
 }
 
-/* convert media_id to embeddable Google Drive view URL */
-function mediaUrlFromId(id) {
-    if (!id) return null;
-
-    // Nếu ID là full URL -> extract ID ra
-    if (id.includes("drive.google.com")) {
-        const match = id.match(/\/d\/(.*)\//);
-        if (match && match[1]) id = match[1];
-    }
-
-    return `https://drive.google.com/uc?export=view&id=${id}`;
+function filter(platform) {
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  loadPosts().then(() => applyFilter(platform));
 }
 
-/* render one post card */
-function renderPost(post){
-  const card = create('div','card');
-  // header
-  const head = create('div','card-head');
-  const left = create('div');
-  const titleLine = create('div','title-line');
-  titleLine.textContent = `#${post.post_id} — ${post.title || '(No Title)'}`;
-  left.appendChild(titleLine);
-
-  const meta = create('div','meta');
-  meta.innerHTML = `<span class="kv"><b>Page:</b> ${post.page || '-'}</span>
-                    <span class="kv">—</span>
-                    <span class="kv"><b>${post.platform || 'Platform'}</b></span>
-                    <span style="width:10px"></span>
-                    <span class="kv"><b>Ngày:</b> ${post.plan_date || '-'}</span>
-                    <span class="kv">|</span>
-                    <span class="kv"><b>Giờ:</b> ${post.plan_time || '-'}</span>`;
-  left.appendChild(meta);
-
-  head.appendChild(left);
-
-  const right = create('div');
-  right.innerHTML = `<div class="badge">ID: ${post.post_id}</div>`;
-  head.appendChild(right);
-
-  card.appendChild(head);
-
-  // body
-  const body = create('div','card-body');
-// MEDIA PREVIEW
-const mediaWrap = create('div','media');
-
-// Ưu tiên media_url từ API
-const mediaUrl = post.media_url || (post.media_id ? mediaUrlFromId(post.media_id) : null);
-
-if (mediaUrl) {
-
-    if (/\.(mp4|mov|webm)$/i.test(mediaUrl)) {
-        const v = create('video');
-        v.controls = true;
-        v.src = mediaUrl;
-        v.style.maxWidth = '100%';
-        v.style.borderRadius = '8px';
-        mediaWrap.appendChild(v);
-    } else {
-        const img = create('img');
-        img.src = mediaUrl;
-        img.alt = post.title;
-        img.style.maxWidth = '100%';
-        img.style.borderRadius = '8px';
-
-        img.onerror = function () {
-            this.remove();
-            mediaWrap.innerHTML = `<div style="padding:12px;color:gray;">Không xem được ảnh</div>`;
-        };
-
-        mediaWrap.appendChild(img);
-    }
-} else {
-    mediaWrap.innerHTML = `<div style="padding:12px;color:gray;">Không có media</div>`;
-}
-
-  // content area
-  const content = create('div','content');
-
-  // caption label + textarea
-  const label = create('div','label');
-  label.innerHTML = '📝 <b>Caption</b>';
-  content.appendChild(label);
-
-  const textarea = create('textarea');
-  textarea.id = `caption-${post.post_id}`;
-  textarea.placeholder = "Caption sẽ hiển thị tại đây. Bạn có thể sửa hoặc nhấn 'Rewrite' để gọi AI viết mới.";
-  textarea.value = post.caption || '';
-  textarea.disabled = true;
-  content.appendChild(textarea);
-
-  // controls
-  const ctr = create('div','controls');
-
-  // edit toggle
-  const editBtn = create('button','small-btn');
-  editBtn.innerHTML = '✏️ Edit';
-  editBtn.onclick = () => {
-    const t = textarea;
-    t.disabled = !t.disabled;
-    if(!t.disabled) {
-      editBtn.classList.add('primary');
-      editBtn.textContent = '💾 Save (Local)';
-    } else {
-      editBtn.classList.remove('primary');
-      editBtn.textContent = '✏️ Edit';
-      // if we toggled to disabled -> save to server
-      saveCaption(post.post_id, t.value).then(ok=>{
-        if(ok) {
-          // update UI metrics
-          updateMetricsDisplay(post.post_id);
-        }
-      });
-    }
-  };
-
-  // rewrite button (call AI)
-  const rewriteBtn = create('button','small-btn');
-  rewriteBtn.innerHTML = '✨ Rewrite';
-  rewriteBtn.onclick = async () => {
-    // show loading
-    const old = rewriteBtn.innerHTML;
-    rewriteBtn.classList.add('primary');
-    rewriteBtn.disabled = true;
-    rewriteBtn.innerHTML = '<span class="spinner"></span> AI writing...';
-    try {
-      const newCaption = await requestRewrite(post);
-      if(newCaption){
-        textarea.value = newCaption;
-        // auto-save to server after rewrite
-        const ok = await saveCaption(post.post_id, newCaption, 'approved');
-        if(ok) updateMetricsDisplay(post.post_id);
-      } else {
-        alert('Rewrite failed (no response).');
-      }
-    } catch(e){
-      console.error(e);
-      alert('Rewrite error: ' + e.message);
-    } finally {
-      rewriteBtn.disabled = false;
-      rewriteBtn.classList.remove('primary');
-      rewriteBtn.innerHTML = old;
-    }
-  };
-
-  // manual save button (if user edited but wants explicit save)
-  const saveBtn = create('button','small-btn primary');
-  saveBtn.innerHTML = '💾 Lưu & Cập nhật';
-  saveBtn.onclick = async () => {
-    const ok = await saveCaption(post.post_id, textarea.value, 'approved');
-    if(ok) {
-      textarea.disabled = true;
-      editBtn.classList.remove('primary');
-      editBtn.textContent = '✏️ Edit';
-      updateMetricsDisplay(post.post_id);
-      alert('Saved!');
-    }
-  };
-
-  ctr.appendChild(editBtn);
-  ctr.appendChild(rewriteBtn);
-  ctr.appendChild(saveBtn);
-
-  content.appendChild(ctr);
-
-  // metrics box
-  const metricsDiv = create('div','metrics');
-  metricsDiv.id = `metrics-${post.post_id}`;
-  const m = metricsFromText(textarea.value || '');
-  metricsDiv.innerHTML = `<div class="metric">📝 ${m.words} từ</div>
-                          <div class="metric">🔠 ${m.chars} ký tự</div>
-                          <div class="metric">#️⃣ ${m.hashtags} hashtag</div>
-                          <div class="metric">📊 tỉ lệ: ${m.hashtagRatio}</div>
-                          <div class="metric">😊 Cảm xúc: ${m.sentiment}</div>`;
-  content.appendChild(metricsDiv);
-
-  // append body parts
-  body.appendChild(mediaWrap);
-  body.appendChild(content);
-  card.appendChild(body);
-
-  // attach to grid
-  return card;
-}
-
-/* update metrics for given post id */
-function updateMetricsDisplay(postId){
-  const t = document.getElementById(`caption-${postId}`);
-  if(!t) return;
-  const m = metricsFromText(t.value || '');
-  const node = document.getElementById(`metrics-${postId}`);
-  if(node) {
-    node.innerHTML = `<div class="metric">📝 ${m.words} từ</div>
-                      <div class="metric">🔠 ${m.chars} ký tự</div>
-                      <div class="metric">#️⃣ ${m.hashtags} hashtag</div>
-                      <div class="metric">📊 tỉ lệ: ${m.hashtagRatio}</div>
-                      <div class="metric">😊 Cảm xúc: ${m.sentiment}</div>`;
-  }
-}
-
-/* load posts from API */
-async function load(){
-  const grid = el('#grid');
-  grid.innerHTML = '<div style="padding:20px;color:var(--muted)">Đang tải bài...</div>';
-  try {
-    const res = await fetch(API_GET, {cache:'no-store'});
-    if(!res.ok) throw new Error('API GET lỗi: ' + res.status);
-    const json = await res.json();
-    const posts = json.posts || [];
-    if(!posts.length){
-      grid.innerHTML = '<div style="padding:20px;color:var(--muted)">Không có bài hôm nay.</div>';
+function applyFilter(platform) {
+  document.querySelectorAll('.post-card').forEach(card => {
+    if (platform === 'all') {
+      card.style.display = "block";
       return;
     }
-    grid.innerHTML = '';
-    posts.forEach(p => {
-      const card = renderPost(p);
-      grid.appendChild(card);
-    });
-
-    // add event listeners for textarea input to update metrics on the fly
-    document.querySelectorAll('textarea[id^="caption-"]').forEach(txt=>{
-      txt.addEventListener('input', e=>{
-        const id = txt.id.replace('caption-','');
-        updateMetricsDisplay(id);
-      });
-    });
-  } catch(err){
-    console.error(err);
-    el('#grid').innerHTML = `<div style="padding:20px;color:var(--danger)">Không tải được dữ liệu: ${err.message}</div>`;
-  }
+    card.style.display = card.dataset.platform === platform ? "block" : "none";
+  });
 }
 
-/* save caption to server via API_UPDATE
-   status default 'approved' unless provided */
-async function saveCaption(post_id, caption, status='approved'){
-  try {
-    const payload = { post_id, caption, status };
-    const res = await fetch(API_UPDATE, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(payload)
-    });
-    if(!res.ok) throw new Error('Update API lỗi ' + res.status);
-    const data = await res.json();
-    return data.success === true || data.success === undefined; // accept both
-  } catch(err){
-    console.error(err);
-    alert('Lưu thất bại: ' + err.message);
-    return false;
+function mediaPreview(url) {
+  if (!url) return "<div>No media</div>";
+  if (url.includes("preview")) {
+    return `<video controls src="${url}"></video>`;
   }
+  return `<img src="${url}" onerror="this.src='';this.parentElement.innerHTML='Không xem được ảnh';">`;
 }
 
-/* request rewrite from server (API_REWRITE) - expects {caption: "..."} or plain text */
-async function requestRewrite(post){
-  try {
-    const body = {
-      post_id: post.post_id,
-      title: post.title,
-      topic: post.topic,
-      goal: post.goal,
-      style: post.style,
-      audience: post.audience,
-      content_elements: post.content_elements || post.content || ''
-    };
-    const res = await fetch(API_REWRITE, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(body)
-    });
-    if(!res.ok) throw new Error('Rewrite API lỗi ' + res.status);
-    const data = await res.json();
-    // response shape can vary; support multiple forms
-    if(typeof data === 'object'){
-      if(data.caption) return data.caption;
-      if(data.text) return data.text;
-      if(data.output) return data.output;
-      if(Array.isArray(data) && data[0] && data[0].caption) return data[0].caption;
-    }
-    // fallback: if server returns plain text
-    if(typeof data === 'string') return data;
-    return null;
-  } catch(err){
-    console.error('Rewrite error', err);
-    throw err;
-  }
+function wordCount(text) {
+  return text.trim().split(/\s+/).length;
 }
 
-/* UI event bindings */
-el('#refreshBtn').addEventListener('click', ()=> load());
-el('#downloadCsv').setAttribute('href', LOCAL_CSV_PATH);
+/* Render posts */
+function renderPosts(posts) {
+  const wrap = document.getElementById("post-list");
+  wrap.innerHTML = "";
 
-el('#autoReloadToggle').addEventListener('click', ()=>{
-  autoReload = !autoReload;
-  el('#autoReloadToggle').textContent = `⏱️ AutoReload: ${autoReload ? 'ON' : 'OFF'}`;
-  if(autoReload){
-    autoReloadTimer = setInterval(()=> load(), 60000);
-  } else {
-    clearInterval(autoReloadTimer);
-  }
-});
+  posts.forEach(post => {
+    const bgClass =
+      post.platform === "Facebook" ? "platform-facebook" :
+      post.platform === "Instagram" ? "platform-instagram" :
+      "platform-tiktok";
 
-/* initial load */
-load();
+    const html = `
+      <div class="post-card ${bgClass}" data-platform="${post.platform}">
+        
+        <h3>#${post.post_id} — ${post.title}</h3>
+        <div class="label">${post.page} — <b>${post.platform}</b></div>
+        <div class="label">Ngày: ${post.plan_date} — Giờ: 
+          <input type="time" value="${post.plan_time}" id="time-${post.post_id}">
+        </div>
 
-/* expose a global reload for console debugging */
-window.reloadDashboard = load;
-</script>
-</body>
-</html>
+        <div class="media-box">${mediaPreview(post.media_url)}</div>
+
+        <div class="label">Caption</div>
+        <textarea id="caption-${post.post_id}">${post.caption || ""}</textarea>
+
+        <div class="wordcount">📌 Số từ: ${wordCount(post.caption || "")}</div>
+
+        <div class="info-grid">
+          <div>
+            <div class="label">Topic</div>
+            <input id="topic-${post.post_id}" value="${post.topic || ""}">
+          </div>
+          <div>
+            <div class="label">Goal</div>
+            <input id="goal-${post.post_id}" value="${post.goal || ""}">
+          </div>
+          <div>
+            <div class="label">Style</div>
+            <input id="style-${post.post_id}" value="${post.style || ""}">
+          </div>
+          <div>
+            <div class="label">Audience</div>
+            <input id="aud-${post.post_id}" value="${post.audience || ""}">
+          </div>
+          <div>
+            <div class="label">Output Format</div>
+            <input id="format-${post.post_id}" value="${post.output || ""}">
+          </div>
+          <div>
+            <div class="label">Hashtag</div>
+            <input id="tag-${post.post_id}" value="${post.hashtags || ""}">
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn-sm edit-btn">✏ Edit</button>
+          <button class="btn-sm rewrite-btn" onclick="rewrite(${post.post_id})">🔁 Rewrite</button>
+          <button class="btn-sm save-btn" onclick="save(${post.post_id})">💾 Lưu</button>
+        </div>
+
+      </div>
+    `;
+
+    wrap.insertAdjacentHTML("beforeend", html);
+  });
+}
+
+/* SAVE UPDATE */
+async function save(id) {
+  const body = {
+    post_id: id,
+    caption: document.getElementById(`caption-${id}`).value,
+    plan_time: document.getElementById(`time-${id}`).value,
+    topic: document.getElementById(`topic-${id}`).value,
+    goal: document.getElementById(`goal-${id}`).value,
+    style: document.getElementById(`style-${id}`).value,
+    audience: document.getElementById(`aud-${id}`).value,
+    output: document.getElementById(`forma
