@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi" x-data="dashboardApp()" class="h-full bg-gray-100">
+<head>
+  <meta charset="UTF-8" />
+  <title>Content Review Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+
+<body class="h-full">
+
+  <!-- Header -->
+  <header class="bg-white shadow p-4 flex justify-between items-center">
+    <h1 class="text-2xl font-bold">📋 Content Review Dashboard</h1>
+    <button @click="reloadPosts()" class="px-4 py-2 bg-blue-600 text-white rounded-lg">
+      Reload Posts
+    </button>
+  </header>
+
+  <!-- MAIN -->
+  <main class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+    <!-- Card Post -->
+    <template x-for="post in posts" :key="post.post_id">
+      <div class="bg-white shadow rounded-lg p-4 flex flex-col">
+
+        <!-- Image -->
+        <div class="w-full h-56 bg-gray-200 flex items-center justify-center mb-3 rounded overflow-hidden">
+          <template x-if="post.media_url">
+            <img :src="post.media_url" class="w-full h-full object-cover" />
+          </template>
+
+          <template x-if="!post.media_url">
+            <span class="text-gray-500">⏳ Loading media...</span>
+          </template>
+        </div>
+
+        <!-- Info -->
+        <h2 class="text-lg font-bold" x-text="post.title"></h2>
+        <p class="text-sm text-gray-500" x-text="'📆 ' + post.plan_date + ' — ' + post.plan_time"></p>
+        <p class="text-sm text-gray-500" x-text="'🌐 ' + post.platform + ' — ' + post.page"></p>
+
+        <!-- Caption Tabs -->
+        <div class="mt-4">
+          <h3 class="font-semibold mb-2">📝 AI Captions</h3>
+
+          <template x-for="version in ['A','B','C']">
+            <div class="mb-2">
+              <button 
+                @click="selectCaption(post, version)"
+                class="w-full text-left p-2 border rounded hover:bg-gray-50"
+                :class="post.selected == version ? 'border-blue-600 bg-blue-50' : ''">
+                <span class="font-bold" x-text="'Version ' + version"></span>
+                <p class="text-sm mt-1" x-text="post['caption' + version]"></p>
+              </button>
+            </div>
+          </template>
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-4 flex gap-2">
+          <button 
+            @click="approve(post)"
+            class="flex-1 bg-green-600 text-white py-2 rounded">
+            ✔ Approve
+          </button>
+
+          <button 
+            @click="reject(post)"
+            class="flex-1 bg-red-600 text-white py-2 rounded">
+            ✖ Reject
+          </button>
+        </div>
+
+      </div>
+    </template>
+  </main>
+
+  <!-- Alpine App -->
+  <script>
+    function dashboardApp() {
+      return {
+        posts: [],
+
+        async init() {
+          this.reloadPosts();
+        },
+
+        async reloadPosts() {
+          const res = await fetch("/api/posts");
+          const data = await res.json();
+
+          this.posts = data.posts.map(p => ({
+            ...p,
+            selected: null,
+            media_url: null
+          }));
+
+          this.posts.forEach(p => this.loadMedia(p));
+        },
+
+        async loadMedia(post) {
+          if (!post.media_id) return;
+
+          try {
+            post.media_url = `/api/media?file_id=${post.media_id}`;
+          } catch {
+            post.media_url = null;
+          }
+        },
+
+        selectCaption(post, version) {
+          post.selected = version;
+        },
+
+        async approve(post) {
+          if (!post.selected) {
+            alert("Hãy chọn 1 caption version trước!");
+            return;
+          }
+
+          await fetch("/api/submit-review", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              post_id: post.post_id,
+              action: "approve",
+              selected: post.selected
+            })
+          });
+
+          alert("Approved!");
+        },
+
+        async reject(post) {
+          await fetch("/api/submit-review", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              post_id: post.post_id,
+              action: "reject"
+            })
+          });
+
+          alert("Rejected!");
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>
