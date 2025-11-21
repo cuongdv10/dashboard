@@ -288,11 +288,9 @@ function metricsFromText(text){
 }
 
 /* convert media_id to embeddable Google Drive view URL */
-function mediaUrlFromId(id){
-  if(!id) return null;
-  // user might provide full url or id
-  if (id.startsWith("http")) return id;
-  return `https://drive.google.com/uc?export=view&id=${encodeURIComponent(id)}`;
+function mediaUrlFromId(id) {
+    if (!id) return null;
+    return `https://drive.google.com/uc?export=view&id=${id}`;
 }
 
 /* render one post card */
@@ -326,22 +324,36 @@ function renderPost(post){
   // body
   const body = create('div','card-body');
   // media
-  const mediaWrap = create('div','media');
-  const mediaUrl = mediaUrlFromId(post.media_id);
-  if(mediaUrl){
-    // try to display image; if .mp4 use video tag
-    if(/\.(mp4|mov|webm)$/i.test(mediaUrl) || (post.media_type && post.media_type==='video')){
-      const v = create('video'); v.controls = true; v.src = mediaUrl;
-      mediaWrap.appendChild(v);
+const mediaWrap = create('div','media');
+const mediaUrl = mediaUrlFromId(post.media_id);
+
+if (mediaUrl) {
+
+    // nếu là video
+    if (/\.(mp4|mov|webm)$/i.test(post.media_id)) {
+        const v = create('video');
+        v.controls = true;
+        v.src = mediaUrl;
+        mediaWrap.appendChild(v);
+
     } else {
-      const img = create('img'); img.src = mediaUrl;
-      img.alt = post.title || 'media';
-      img.onerror = function(){ this.style.display='none'; mediaWrap.innerHTML = '<div style="padding:12px;color:var(--muted)">No preview</div>'}
-      mediaWrap.appendChild(img);
+        // ảnh
+        const img = create('img');
+        img.src = mediaUrl;
+        img.alt = post.title || 'media';
+
+        img.onerror = function() {
+            this.style.display='none';
+            mediaWrap.innerHTML = '<div style="padding:12px;color:var(--muted)">No preview</div>';
+        };
+
+        mediaWrap.appendChild(img);
     }
-  } else {
+
+} else {
     mediaWrap.innerHTML = '<div style="padding:12px;color:var(--muted)">No media</div>';
-  }
+}
+
 
   // content area
   const content = create('div','content');
