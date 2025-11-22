@@ -1,443 +1,724 @@
 <!doctype html>
 <html lang="vi">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Content Dashboard V3 — Final</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Content Dashboard V4 — Modern</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
 :root{
-  --bg:#f5f7fb;
-  --card:#ffffff;
-  --muted:#6b7280;
-  --accent:#2563eb;
-  --accent-2:#06b6d4;
-  --success:#10b981;
-  --warning:#f59e0b;
-  --danger:#ef4444;
-  --radius:12px;
-  --shadow: 0 10px 30px rgba(14,30,37,0.06);
+  --bg:#f4f6fb; --card:#ffffff; --muted:#6b7280; --accent:#4f46e5; --accent-2:#06b6d4;
+  --success:#10b981; --warning:#f59e0b; --danger:#ef4444; --radius:16px; --shadow:0 12px 40px rgba(15,23,42,0.08);
 }
 *{box-sizing:border-box}
-body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;background:var(--bg);margin:0;color:#0f172a}
-.wrap{max-width:1150px;margin:26px auto;padding:18px}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial;background:linear-gradient(180deg,#f6f8ff 0,#f4f6fb 40%);margin:0;color:#0b1220}
+.app{max-width:1250px;margin:28px auto;padding:20px}
+.header{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}
 .brand{display:flex;gap:12px;align-items:center}
-.logo{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:18px;box-shadow:0 6px 18px rgba(37,99,235,0.12)}
-h1{font-size:20px;margin:0}
-.sub{font-size:13px;color:var(--muted)}
-.controls{display:flex;gap:12px;align-items:center}
-.btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;border:0;cursor:pointer}
-.btn-alt{background:#fff;border:1px solid #e6e8ee;padding:8px 12px;border-radius:10px;cursor:pointer}
-.filters{display:flex;gap:8px;align-items:center}
-.chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid transparent;cursor:pointer;font-size:14px}
-.chip.active{background:var(--accent);color:#fff;border-color:var(--accent)}
-.status{font-size:13px;color:var(--muted);margin-bottom:12px}
+.logo{width:60px;height:60px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px;box-shadow:0 8px 30px rgba(79,70,229,0.14)}
+.title{font-size:20px;margin:0}
+.subtitle{font-size:13px;color:var(--muted)}
+.controls{display:flex;gap:10px;align-items:center}
+.btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:12px;border:0;cursor:pointer;box-shadow:0 6px 18px rgba(79,70,229,0.12);font-weight:600}
+.btn-ghost{background:#fff;border:1px solid #e8eefc;padding:8px 12px;border-radius:12px;cursor:pointer}
+.row{display:flex;gap:12px;align-items:center}
+.chips{display:flex;gap:8px}
+.chip{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid transparent;cursor:pointer;font-size:14px;box-shadow:0 6px 18px rgba(12,18,46,0.02)}
+.chip.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent;transform:translateY(-2px)}
+.container{display:flex;gap:18px}
+.sidebar{width:260px;background:transparent;padding:12px 6px}
+.panel{background:var(--card);border-radius:12px;padding:12px;box-shadow:var(--shadow)}
+.filter-title{font-weight:600;margin-bottom:8px}
+.filter-group{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.select, input[type="search"]{width:100%;padding:10px;border-radius:8px;border:1px solid #eef2ff}
+.main{flex:1}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.actions{display:flex;gap:8px;align-items:center}
+.select-all{display:flex;align-items:center;gap:6px;color:var(--muted)}
+.batch-actions{display:flex;gap:8px}
+.badge{padding:6px 10px;border-radius:10px;background:#eef2ff;color:var(--accent);font-weight:600}
+.list{display:flex;flex-direction:column;gap:16px}
 
-/* list & cards */
-.list{display:flex;flex-direction:column;gap:18px}
-.card-wrap{display:block}
-.card{display:flex;gap:18px;background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);align-items:flex-start;overflow:hidden}
-.left{width:280px;min-width:220px}
-.right{flex:1}
-.meta{font-size:13px;color:var(--muted);margin-bottom:8px}
-.title{font-weight:600;margin:0 0 8px 0;font-size:16px}
-.media{border-radius:8px;overflow:hidden;background:#fafafa;width:100%;height:160px;display:flex;align-items:center;justify-content:center;border:1px solid #f0f2f5}
-.media img, .media video, .media iframe{width:100%;height:100%;object-fit:contain;display:block;border:0}
-.caption{width:100%;min-height:120px;padding:12px;border-radius:8px;border:1px solid #e6e8ee;font-size:14px;resize:vertical}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+/* Card */
+.card{display:flex;gap:16px;background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--shadow);align-items:flex-start;overflow:hidden;transition:transform .16s,box-shadow .16s}
+.card:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(12,18,46,0.08)}
+.card-left{width:320px;min-width:260px}
+.card-right{flex:1}
+.card-top{display:flex;align-items:center;gap:12px}
+.id-bubble{width:40px;height:40px;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;border:1px solid #f0f3ff;color:var(--accent);box-shadow:0 8px 20px rgba(79,70,229,0.06)}
+.title{font-weight:700;margin:0}
+.meta{font-size:13px;color:var(--muted)}
+.media{border-radius:10px;overflow:hidden;background:#fafbff;width:100%;height:180px;display:flex;align-items:center;justify-content:center;border:1px solid #f0f3ff}
+.media img, .media iframe, .media video{width:100%;height:100%;object-fit:cover;display:block}
+
+/* right area form */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 .field{display:flex;flex-direction:column;gap:6px}
 .field label{font-size:13px;color:var(--muted)}
-.field input, .field select, textarea{padding:10px;border-radius:8px;border:1px solid #e6e8ee;font-size:14px}
-.actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.btn-sm{padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:600}
-.btn-edit{background:#eef2ff;color:#0b3b8c}
-.btn-rewrite{background:var(--warning);color:#fff}
-.btn-save{background:var(--success);color:#fff}
-.small{font-size:13px;color:var(--muted)}
-.badge{display:inline-block;padding:6px 8px;border-radius:8px;background:#f3f4f6;color:#111;font-size:12px;margin-left:6px}
+.field select, .field input, .field textarea{padding:10px;border-radius:10px;border:1px solid #eef2ff;font-size:14px;background:#fff}
+.caption{width:100%;min-height:120px;padding:12px;border-radius:10px;border:1px solid #eef2ff;font-size:14px;resize:vertical;overflow-wrap:break-word;white-space:pre-wrap;box-sizing:border-box}
 
-/* platform color indicator */
-.platform-facebook .card{border-left:8px solid #1877f2}
-.platform-instagram .card{border-left:8px solid #fb4386}
-.platform-tiktok .card{border-left:8px solid #111}
+/* info & stats */
+.stats{display:flex;gap:12px;align-items:center;margin-top:8px;color:var(--muted);font-size:13px}
+.stat{background:#fbfbff;padding:6px 10px;border-radius:999px;border:1px solid #f2f6ff}
+.card-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn-sm{padding:8px 12px;border-radius:9px;border:0;cursor:pointer;font-weight:600}
+.btn-edit{background:#eef2ff;color:var(--accent)}
+.btn-rewrite{background:linear-gradient(90deg,var(--warning),#ff7a3d);color:#fff}
+.btn-save{background:linear-gradient(90deg,var(--success),#10b981);color:#fff}
+
+/* platform borders */
+.platform-Facebook .card{border-left:8px solid #1877f2}
+.platform-Instagram .card{border-left:8px solid #fb4386}
+.platform-Tiktok .card{border-left:8px solid #111}
 
 /* responsive */
-@media (max-width:1000px){
+@media(max-width:1050px){
+  .container{flex-direction:column}
+  .sidebar{width:100%}
   .card{flex-direction:column}
-  .left{width:100%;min-width:unset}
-  .media{height:220px}
+  .card-left{width:100%}
   .grid{grid-template-columns:1fr}
-  header{flex-direction:column;align-items:flex-start;gap:12px}
 }
 
-/* overlay loading */
-.overlay {
-  position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.35);display:none;align-items:center;justify-content:center;z-index:9999;
-}
-.loader {
-  background:#fff;padding:16px;border-radius:12px;display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px rgba(2,6,23,0.2)
-}
-@keyframes spin{to{transform:rotate(360deg)}}
-.spinner{width:36px;height:36px;border-radius:50%;border:4px solid #eee;border-top-color:var(--accent);animation:spin 1s linear infinite}
+/* overlay + modal */
+.overlay{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(6,10,18,0.45);display:none;align-items:center;justify-content:center;z-index:9999}
+.modal{background:#fff;border-radius:12px;padding:18px;max-width:720px;width:100%;box-shadow:0 20px 60px rgba(2,6,23,0.3)}
+.loading-dot{width:14px;height:14px;border-radius:50%;background:var(--accent);opacity:0.9;animation:load 1s infinite ease-in-out}
+@keyframes load{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+.small{font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
+<div class="app">
+  <div class="header">
     <div class="brand">
       <div class="logo">CD</div>
       <div>
-        <h1>Content Dashboard V3 — Final</h1>
-        <div class="sub">Notion-like · Dynamic fields từ Google Sheets · Preview ảnh/video · Rewrite AI · Inline edit</div>
+        <div class="title">Content Dashboard V4 — Modern</div>
+        <div class="subtitle">Animated · Batch actions · Undo · Rewrite AI · Dynamic fields</div>
       </div>
     </div>
-
     <div class="controls">
-      <div class="filters" id="filterBar">
+      <div class="row chips" id="chipBar">
         <div class="chip active" data-plat="all">Tất cả</div>
         <div class="chip" data-plat="Facebook">Facebook</div>
         <div class="chip" data-plat="Instagram">Instagram</div>
         <div class="chip" data-plat="Tiktok">TikTok</div>
       </div>
-      <button class="btn" id="btnRefresh">🔄 Refresh</button>
+      <div class="row">
+        <button class="btn" id="btnRefresh">🔄 Refresh</button>
+        <button class="btn-ghost" id="btnDownloadSample">📥 Tải sample CSV</button>
+      </div>
     </div>
-  </header>
+  </div>
 
-  <div id="status" class="status">⏳ Chuẩn bị...</div>
-  <div id="postList" class="list"></div>
+  <div class="container">
+    <aside class="sidebar">
+      <div class="panel">
+        <div class="filter-title">Sidebar filters</div>
+        <div class="filter-group">
+          <input id="searchBox" type="search" placeholder="Tìm theo tiêu đề hoặc caption..." />
+        </div>
+        <div class="filter-title">Platform</div>
+        <div class="filter-group" id="platformFilters">
+          <label><input type="checkbox" value="Facebook" checked /> Facebook</label>
+          <label><input type="checkbox" value="Instagram" checked /> Instagram</label>
+          <label><input type="checkbox" value="Tiktok" checked /> TikTok</label>
+        </div>
+        <div class="filter-title">Status</div>
+        <div class="filter-group">
+          <select id="statusFilter" class="select"><option value="">All</option><option value="Planned">Planned</option><option value="Planded">Planded</option></select>
+        </div>
+        <div style="margin-top:12px">
+          <button class="btn" id="btnSelectAll">Select All</button>
+        </div>
+        <div style="margin-top:12px">
+          <div class="small">Batch Actions</div>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn-ghost" id="btnBatchRewrite">🔁 Batch Rewrite</button>
+            <button class="btn-ghost" id="btnBatchChange">🛠 Batch Change Fields</button>
+          </div>
+        </div>
+      </div>
+    </aside>
 
-  <div style="margin-top:18px;font-size:13px;color:var(--muted)">
-    Sample local CSV: <a href="/mnt/data/Content-Planner - Plan.csv" target="_blank">/mnt/data/Content-Planner - Plan.csv</a>
+    <main class="main">
+      <div class="toolbar">
+        <div class="row">
+          <div class="select-all"><input id="masterCheck" type="checkbox" /> <span class="small">Chọn nhiều</span></div>
+          <div style="margin-left:12px" id="selectedCount">0 đã chọn</div>
+        </div>
+        <div class="actions">
+          <div class="batch-actions">
+            <button class="btn-ghost" id="btnApprove">✅ Approve</button>
+            <button class="btn-ghost" id="btnExport">📤 Export CSV</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="list" class="list"></div>
+      <div id="empty" class="small" style="display:none">Không tìm thấy bài nào.</div>
+    </main>
   </div>
 </div>
 
-<!-- overlay -->
+<!-- overlay / modal -->
 <div id="overlay" class="overlay">
-  <div class="loader">
-    <div class="spinner"></div>
-    <div><strong>Đang xử lý — chờ AI trả nội dung...</strong></div>
-  </div>
+  <div class="modal" id="modalBox" role="dialog" aria-modal="true" style="display:none"></div>
 </div>
 
 <script>
-/* CONFIG - sửa endpoint khi deploy */
+/* ========== CONFIG ========== */
 const API_FIELDS = "https://pfktja.ezn8n.com/webhook/api/fields";
 const API_POSTS  = "https://pfktja.ezn8n.com/webhook/api/posts";
 const API_UPDATE = "https://pfktja.ezn8n.com/webhook/api/update";
 const API_REWRITE = "https://pfktja.ezn8n.com/webhook/api/rewrite";
+const API_BULK = "https://pfktja.ezn8n.com/webhook/api/bulk-update"; // optional
 
-/* state */
-let FIELD_OPTIONS = {};
-let POSTS = [];
-let CURRENT_FILTER = 'all';
+// sample CSV local file path you uploaded earlier (system will expose it)
+const SAMPLE_CSV = "/mnt/data/Content-Planner - Plan.csv";
 
-/* helper fetch JSON with errors */
-async function fetchJson(url, opts){
-  const res = await fetch(url, opts);
-  if(!res.ok){
-    const txt = await res.text().catch(()=>null);
-    throw new Error(`HTTP ${res.status}: ${txt || res.statusText}`);
-  }
-  return res.json();
+/* ========== STATE ========== */
+let FIELDS = {};      // options loaded from API_FIELDS
+let POSTS = [];       // posts loaded from API_POSTS
+let UNDO_CACHE = {};  // per-post single snapshot
+let SELECTED = new Set();
+
+/* helper fetch */
+async function fjson(url, opts){
+  const r = await fetch(url, opts);
+  if(!r.ok) throw new Error(`HTTP ${r.status} ${await r.text().catch(()=>r.statusText)}`);
+  return r.json();
 }
 
-/* normalize google drive id or url */
+/* drive helper */
 function extractDriveId(val){
   if(!val) return null;
-  // if full url with /d/ID/
-  const m = (''+val).match(/\/d\/([a-zA-Z0-9_-]{10,})/);
+  const s = String(val);
+  const m = s.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
   if(m) return m[1];
-  // url param id=
-  const m2 = (''+val).match(/[?&]id=([a-zA-Z0-9_-]{10,})/);
+  const m2 = s.match(/[?&]id=([a-zA-Z0-9_-]{10,})/);
   if(m2) return m2[1];
-  // plain id?
-  if(/^[a-zA-Z0-9_-]{10,}$/.test(val)) return val;
-  // fallback null
+  if(/^[a-zA-Z0-9_-]{10,}$/.test(s)) return s;
   return null;
 }
-
-/* build preview URL - use thumbnail for images; iframe preview for video */
-function buildPreviewUrl(media_id, media_type) {
+function buildPreview(media_id, media_type){
   const id = extractDriveId(media_id);
   if(!id) return null;
-  // Always use thumbnail for image preview (fast)
-  if(media_type && media_type.toLowerCase().includes('video')) {
-    return { type:'video', url: `https://drive.google.com/file/d/${id}/preview` };
-  }
-  // else image - thumbnail endpoint
-  return { type:'image', url: `https://drive.google.com/thumbnail?id=${id}` };
+  if(media_type && media_type.toLowerCase().includes('video')) return {type:'video', url:`https://drive.google.com/file/d/${id}/preview`};
+  return {type:'image', url:`https://drive.google.com/thumbnail?id=${id}`};
 }
 
-/* load field values from API */
+/* ========== UI UTIL ========== */
+function el(tag, cls, inner){ const d = document.createElement(tag); if(cls) d.className = cls; if(inner!==undefined) d.innerHTML = inner; return d; }
+function showOverlay(html){ const overlay=document.getElementById('overlay'); const box=document.getElementById('modalBox'); box.style.display='block'; box.innerHTML = html; overlay.style.display='flex'; box.style.opacity=1; }
+function hideOverlay(){ const overlay=document.getElementById('overlay'); const box=document.getElementById('modalBox'); box.style.display='none'; overlay.style.display='none'; }
+
+/* ========== LOAD FIELDS & POSTS ========== */
 async function loadFields(){
   try{
-    document.getElementById('status').innerText = '⏳ Tải dropdown fields...';
-    const data = await fetchJson(API_FIELDS, {cache:'no-store'});
-    FIELD_OPTIONS = data.fields || {};
-    document.getElementById('status').innerText = '✅ Fields sẵn sàng';
-  }catch(err){
-    console.error('loadFields', err);
-    FIELD_OPTIONS = {};
-    document.getElementById('status').innerText = '⚠ Lỗi load fields: ' + err.message;
-  }
+    const data = await fjson(API_FIELDS, {cache:'no-store'});
+    FIELDS = data.fields || {};
+    console.log('FIELDS', FIELDS);
+  }catch(err){ console.error('loadFields',err); FIELDS={}; }
 }
-
-/* load posts from API */
 async function loadPosts(){
   try{
-    document.getElementById('status').innerText = '⏳ Tải posts...';
-    const data = await fetchJson(API_POSTS, {cache:'no-store'});
-    POSTS = data.posts || [];
-    renderPosts(POSTS);
-    document.getElementById('status').innerText = `✅ Đã tải ${POSTS.length} bài`;
-  }catch(err){
-    console.error('loadPosts', err);
-    POSTS = [];
-    document.getElementById('postList').innerHTML = '';
-    document.getElementById('status').innerText = '⚠ Lỗi load posts: ' + err.message;
-  }
+    const data = await fjson(API_POSTS, {cache:'no-store'});
+    POSTS = (data.posts || []).map(p => Object.assign({}, p)); // copy
+    console.log('POSTS', POSTS);
+    renderList();
+  }catch(err){ console.error('loadPosts',err); POSTS=[]; renderList(); }
 }
 
-/* Build select HTML or fallback input for a field (scoped to a card) */
-function buildFieldControl(fieldKey, currentValue, postId){
-  const opts = FIELD_OPTIONS[fieldKey] || [];
-  const idAttr = `data-field="${fieldKey}" data-post="${postId}"`;
-  if(Array.isArray(opts) && opts.length>0){
-    let html = `<select ${idAttr} class="field-input">`;
-    html += `<option value="">— (chọn) —</option>`;
-    opts.forEach(o=>{
-      const safe = (o||'').toString().replaceAll('"','&quot;');
-      html += `<option value="${safe}" ${safe===currentValue ? 'selected' : ''}>${safe}</option>`;
-    });
-    html += `</select>`;
-    return html;
-  } else {
-    return `<input ${idAttr} value="${(currentValue||'').toString().replaceAll('"','&quot;')}" />`;
-  }
-}
+/* ========== RENDER LIST ========== */
+function clearList(){ document.getElementById('list').innerHTML = ''; SELECTED.clear(); updateSelectedCount(); }
+function updateSelectedCount(){ document.getElementById('selectedCount').innerText = `${SELECTED.size} đã chọn`; }
+function renderList(){
+  const list = document.getElementById('list');
+  list.innerHTML='';
+  if(!POSTS.length){ document.getElementById('empty').style.display='block'; return; } else document.getElementById('empty').style.display='none';
 
-/* render all posts */
-function renderPosts(posts){
-  const wrap = document.getElementById('postList');
-  wrap.innerHTML = '';
-  if(!posts.length){
-    wrap.innerHTML = '<div class="small">Không có bài.</div>';
-    return;
-  }
-
-  posts.forEach(post=>{
-    const cardWrap = document.createElement('div'); cardWrap.className = `card-wrap platform-${(post.platform||'').toLowerCase()}`;
-    const card = document.createElement('div'); card.className = 'card';
-
-    // LEFT
-    const left = document.createElement('div'); left.className = 'left';
-    const idBadge = document.createElement('div'); idBadge.className = 'meta'; idBadge.innerHTML = `ID <span class="badge">${post.post_id}</span>`;
-    const title = document.createElement('div'); title.className='title'; title.innerText = post.title || '';
-    const pageLine = document.createElement('div'); pageLine.className='meta'; pageLine.innerHTML = `${post.page || ''} — <strong>${post.platform || ''}</strong>`;
-    const dateLine = document.createElement('div'); dateLine.className='meta';
-    const timeValue = (post.plan_time||'').split(':').slice(0,2).join(':');
-    dateLine.innerHTML = `Ngày: ${post.plan_date || '-'} • Giờ: <input type="time" value="${timeValue||''}" data-time="${post.post_id}" />`;
+  POSTS.forEach(post=>{
+    const wrap = el('div','card-wrap');
+    const card = el('div','card platform-'+(post.platform||'').replace(/\s+/g,''));
+    // left
+    const left = el('div','card-left');
+    const top = el('div','card-top');
+    const idBubble = el('div','id-bubble', post.post_id || '#');
+    const tbox = el('div');
+    const title = el('div','title', (post.title||'').slice(0,180));
+    const meta = el('div','meta', `${post.page || ''} — <strong>${post.platform || ''}</strong><br><span class="small">Ngày: ${post.plan_date || '-'} • Giờ: ${post.plan_time || '-'}</span>`);
+    tbox.appendChild(title); tbox.appendChild(meta);
+    top.appendChild(idBubble); top.appendChild(tbox);
 
     // media
-    const mediaBox = document.createElement('div'); mediaBox.className='media';
-    const preview = buildPreviewUrl(post.media_url || post.media_id, post.media_type);
-    if(preview && preview.url){
-      if(preview.type === 'video'){
-        // use iframe preview (drive preview)
-        const iframe = document.createElement('iframe');
-        iframe.src = preview.url;
-        iframe.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
-        iframe.setAttribute('loading','lazy');
-        mediaBox.appendChild(iframe);
+    const media = el('div','media');
+    const preview = buildPreview(post.media_url || post.media_id, post.media_type);
+    if(preview){
+      if(preview.type==='video'){
+        const iframe = document.createElement('iframe'); iframe.src = preview.url; iframe.frameBorder=0; iframe.allow='autoplay; encrypted-media; picture-in-picture'; media.appendChild(iframe);
       } else {
-        const img = document.createElement('img');
-        img.src = preview.url;
-        img.alt = post.title || 'media';
-        img.onerror = function(){ this.style.display = 'none'; mediaBox.innerHTML = `<div style="padding:12px;color:var(--muted)">Không xem được ảnh</div>`};
-        mediaBox.appendChild(img);
+        const img = document.createElement('img'); img.src = preview.url; img.alt = post.title || 'media';
+        img.onerror = ()=>{ media.innerHTML = '<div class="small">Không xem được ảnh</div>'; }
+        media.appendChild(img);
       }
-    } else {
-      mediaBox.innerHTML = `<div style="padding:12px;color:var(--muted)">No media</div>`;
-    }
+    } else media.innerHTML = '<div class="small">No media</div>';
 
-    left.appendChild(idBadge);
-    left.appendChild(title);
-    left.appendChild(pageLine);
-    left.appendChild(dateLine);
-    left.appendChild(mediaBox);
+    left.appendChild(top); left.appendChild(media);
 
-    // RIGHT
-    const right = document.createElement('div'); right.className = 'right';
-
-    // dynamic fields row
-    const grid = document.createElement('div'); grid.className='grid';
-    const mapKeys = [
-      {key:'topic', label:'Topic', val: post.topic || post.Topic || ''},
-      {key:'goal', label:"Post's goal", val: post["Post's goal"] || post.goal || ''},
-      {key:'style', label:'Desired style', val: post["Desired style"] || post.style || ''},
-      {key:'audience', label:'Target audience', val: post["Target audience"] || post.audience || ''},
-      {key:'format', label:'Output Format', val: post["Output Format"] || post.output_format || post.output || ''}
+    // right form
+    const right = el('div','card-right');
+    const topRow = el('div','grid');
+    // dynamic fields (topic, goal, style, audience, format)
+    const mapping = [
+      {k:'topic', label:'Topic', val: post.topic || post.Topic || ''},
+      {k:'goal', label:"Post's goal", val: post["Post's goal"] || post.goal || ''},
+      {k:'style', label:'Desired style', val: post["Desired style"] || post.style || ''},
+      {k:'audience', label:'Target audience', val: post["Target audience"] || post.audience || ''},
+      {k:'format', label:'Output Format', val: post["Output Format"] || post.output_format || post.output || ''}
     ];
-    mapKeys.forEach(m=>{
-      const f = document.createElement('div'); f.className='field';
-      const lab = document.createElement('label'); lab.innerText = m.label;
-      const control = document.createElement('div');
-      control.innerHTML = buildFieldControl(m.key, m.val, post.post_id);
-      f.appendChild(lab); f.appendChild(control);
-      grid.appendChild(f);
+    mapping.forEach(m=>{
+      const fld = el('div','field');
+      fld.innerHTML = `<label>${m.label}</label>`;
+      const control = el('div');
+      const opts = FIELDS[m.k] || [];
+      if(Array.isArray(opts) && opts.length){
+        const sel = document.createElement('select'); sel.dataset.field = m.k; sel.dataset.post = post.post_id;
+        const emptyOpt = document.createElement('option'); emptyOpt.value=''; emptyOpt.text='— (chọn) —'; sel.appendChild(emptyOpt);
+        opts.forEach(o=>{
+          const opt = document.createElement('option'); opt.value = o; opt.text = o;
+          if(String(o) === String(m.val)) opt.selected = true;
+          sel.appendChild(opt);
+        });
+        control.appendChild(sel);
+      } else {
+        const inp = document.createElement('input'); inp.value = m.val||''; inp.dataset.field = m.k; inp.dataset.post = post.post_id;
+        control.appendChild(inp);
+      }
+      fld.appendChild(control); topRow.appendChild(fld);
     });
 
-    // caption
-    const capLabel = document.createElement('div'); capLabel.className='meta'; capLabel.style.marginTop='12px'; capLabel.innerText='Caption';
-    const textarea = document.createElement('textarea'); textarea.className='caption'; textarea.id = `cap_${post.post_id}`;
+    // caption area
+    const capLabel = el('div','field'); capLabel.innerHTML = '<label>Caption</label>';
+    const textarea = document.createElement('textarea'); textarea.className='caption'; textarea.id='cap_'+post.post_id;
     textarea.value = post.caption || post["Post Content"] || '';
     textarea.addEventListener('input', ()=>updateStats(post.post_id, textarea.value));
+    capLabel.appendChild(textarea);
 
-    // stats
-    const stats = document.createElement('div'); stats.className='small'; stats.style.marginTop='8px';
-    stats.innerHTML = `Số từ: <span id="wc_${post.post_id}">0</span> • Ký tự: <span id="cc_${post.post_id}">0</span>`;
+    // stats & checkbox
+    const stats = el('div','stats');
+    const wc = el('div','stat small','Từ: <span id="wc_'+post.post_id+'">0</span>');
+    const cc = el('div','stat small','Ký tự: <span id="cc_'+post.post_id+'">0</span>');
+    stats.appendChild(wc); stats.appendChild(cc);
 
-    // actions
-    const actions = document.createElement('div'); actions.className='actions';
-    const btnEdit = document.createElement('button'); btnEdit.className='btn-sm btn-edit'; btnEdit.innerText='✏ Edit'; btnEdit.onclick = ()=> textarea.focus();
-    const btnRewrite = document.createElement('button'); btnRewrite.className='btn-sm btn-rewrite'; btnRewrite.innerText='🔁 Rewrite';
-    btnRewrite.onclick = ()=> rewriteHandler(post.post_id, textarea);
-    const btnSave = document.createElement('button'); btnSave.className='btn-sm btn-save'; btnSave.innerText='💾 Lưu & Cập nhật';
-    btnSave.onclick = ()=> saveHandler(post, card);
+    // checkbox + actions
+    const chk = document.createElement('input'); chk.type='checkbox'; chk.dataset.post = post.post_id;
+    chk.addEventListener('change', (e)=> handleSelectToggle(post.post_id, e.target.checked));
+    const chkWrap = el('div','small'); chkWrap.appendChild(chk); chkWrap.appendChild(document.createTextNode(' Chọn'));
 
-    actions.appendChild(btnEdit); actions.appendChild(btnRewrite); actions.appendChild(btnSave);
+    // buttons
+    const actions = el('div','card-actions');
+    const btnEdit = el('button','btn-sm btn-edit','✏ Edit'); btnEdit.onclick = ()=> textarea.focus();
+    const btnQuick = el('button','btn-sm btn-rewrite','🔁 Rewrite'); btnQuick.onclick = ()=> quickRewrite(post.post_id, textarea);
+    const btnAdv = el('button','btn-sm btn-ghost','⚙ Advanced'); btnAdv.onclick = ()=> openRewriteModal(post.post_id, textarea);
+    const btnSave = el('button','btn-sm btn-save','💾 Lưu'); btnSave.onclick = ()=> savePost(post.post_id);
+    const btnUndo = el('button','btn-sm btn-ghost','⤺ Undo'); btnUndo.onclick = ()=> undoSnapshot(post.post_id);
 
-    right.appendChild(grid);
+    actions.appendChild(btnEdit); actions.appendChild(btnQuick); actions.appendChild(btnAdv); actions.appendChild(btnSave); actions.appendChild(btnUndo);
+
+    right.appendChild(topRow);
     right.appendChild(capLabel);
-    right.appendChild(textarea);
     right.appendChild(stats);
+    right.appendChild(el('div','small', ' '));
+    right.appendChild(chkWrap);
     right.appendChild(actions);
 
-    card.appendChild(left);
-    card.appendChild(right);
-    cardWrap.appendChild(card);
-    wrap.appendChild(cardWrap);
+    // assemble
+    card.appendChild(left); card.appendChild(right);
+    card.classList.add('platform-'+(post.platform||'').replace(/\s+/g,''));
+    // store card ref
+    card.dataset.post = post.post_id;
+    // append
+    list.appendChild(card);
 
     // initial stats
     updateStats(post.post_id, textarea.value);
-  });
 
-  // apply filter after render
-  applyFilter(CURRENT_FILTER);
+    // wire time input change (in left meta)
+    const timeInput = left.querySelector('input[type="time"]');
+    if(timeInput){ timeInput.addEventListener('change', ()=> savePostTime(post.post_id, timeInput.value)); }
+
+    // Save initial snapshot for undo
+    UNDO_CACHE[post.post_id] = snapshotPost(post);
+  });
 }
 
-/* update word/char counts */
-function updateStats(id, text){
+/* update stats */
+function updateStats(postId, text){
   const words = text.trim()? text.trim().split(/\s+/).length : 0;
   const chars = text.length;
-  const wEl = document.getElementById(`wc_${id}`);
-  const cEl = document.getElementById(`cc_${id}`);
-  if(wEl) wEl.innerText = words;
-  if(cEl) cEl.innerText = chars;
+  const w = document.getElementById('wc_'+postId); const c = document.getElementById('cc_'+postId);
+  if(w) w.innerText = words; if(c) c.innerText = chars;
 }
 
-/* filter UI */
-document.getElementById('filterBar').addEventListener('click', (e)=>{
-  const chip = e.target.closest('.chip');
-  if(!chip) return;
-  const plat = chip.dataset.plat || 'all';
-  CURRENT_FILTER = plat;
-  document.querySelectorAll('#filterBar .chip').forEach(c=>c.classList.remove('active'));
-  chip.classList.add('active');
-  applyFilter(plat);
-});
-function applyFilter(plat){
-  document.querySelectorAll('#postList .card-wrap').forEach(w=>{
-    if(plat==='all'){ w.style.display='block'; return; }
-    const cls = 'platform-'+plat.toLowerCase();
-    w.style.display = w.classList.contains(cls) ? 'block' : 'none';
-  });
+/* snapshot (single-level) */
+function snapshotPost(post){
+  return {
+    post_id: post.post_id,
+    caption: post.caption || post["Post Content"] || '',
+    time: post.plan_time,
+    fields: {
+      topic: post.topic || post.Topic || '',
+      goal: post["Post's goal"] || post.goal || '',
+      style: post["Desired style"] || post.style || '',
+      audience: post["Target audience"] || post.audience || '',
+      format: post["Output Format"] || post.output_format || post.output || ''
+    }
+  };
 }
-
-/* Save: gather inputs/selects inside the same card */
-async function saveHandler(post, cardElement){
-  const postId = post.post_id;
-  // find the cardWrap by searching for the card that contains the textarea cap_{id}
-  const textarea = document.getElementById(`cap_${postId}`);
-  if(!textarea){ alert('Không tìm caption'); return; }
-  // collect payload
-  const payload = { post_id: postId };
-  payload['Post Content'] = textarea.value;
-  // time input
-  const timeInput = document.querySelector(`input[type="time"][data-time="${postId}"]`);
-  if(timeInput) payload['Plan Time'] = timeInput.value;
-
-  // fields selects/inputs (data-field + data-post)
+function undoSnapshot(postId){
+  const snap = UNDO_CACHE[postId];
+  if(!snap){ alert('Không có snapshot để khôi phục'); return; }
+  // find textarea and inputs
+  const ta = document.getElementById('cap_'+postId);
+  if(ta) { ta.value = snap.caption; updateStats(postId, snap.caption); }
+  // fields
   document.querySelectorAll(`[data-post="${postId}"]`).forEach(el=>{
-    const key = el.getAttribute('data-field');
+    const key = el.dataset.field;
     if(!key) return;
-    if(el.tagName.toLowerCase() === 'select' || el.tagName.toLowerCase() === 'input'){
-      // map to sheet columns naming if necessary
-      if(key === 'topic') payload['Topic'] = el.value;
-      else if(key === 'goal') payload["Post's goal"] = el.value;
-      else if(key === 'style') payload['Desired style'] = el.value;
-      else if(key === 'audience') payload['Target audience'] = el.value;
-      else if(key === 'format') payload['Output Format'] = el.value;
+    const val = snap.fields[key] || '';
+    if(el.tagName.toLowerCase() === 'select' || el.tagName.toLowerCase()==='input') el.value = val;
+  });
+  alert('Đã khôi phục snapshot trước đó');
+}
+
+/* handle selection */
+function handleSelectToggle(postId, checked){
+  if(checked) SELECTED.add(postId); else SELECTED.delete(postId);
+  updateSelectedCount();
+}
+
+/* master select */
+document.getElementById('masterCheck').addEventListener('change', (e)=>{
+  const checked = e.target.checked;
+  document.querySelectorAll('#list .card').forEach(card=>{
+    const pid = card.dataset.post;
+    const cb = card.querySelector('input[type="checkbox"]');
+    if(cb) { cb.checked = checked; if(checked) SELECTED.add(pid); else SELECTED.delete(pid); }
+  });
+  updateSelectedCount();
+});
+
+/* select from sidebar */
+document.getElementById('btnSelectAll').addEventListener('click', ()=>{
+  document.querySelectorAll('#list .card input[type="checkbox"]').forEach(cb=>{ cb.checked = true; SELECTED.add(cb.dataset.post); });
+  updateSelectedCount();
+});
+
+/* save single post */
+async function savePost(postId){
+  // take snapshot before sending as undo point
+  const post = POSTS.find(p=>String(p.post_id)===String(postId));
+  if(!post){ alert('Không tìm post'); return; }
+  UNDO_CACHE[postId] = snapshotPost(post);
+
+  // gather payload
+  const payload = { post_id: postId };
+  const ta = document.getElementById('cap_'+postId);
+  payload['Post Content'] = ta? ta.value : '';
+
+  // gather fields
+  document.querySelectorAll(`[data-post="${postId}"]`).forEach(el=>{
+    const key = el.dataset.field;
+    if(key){
+      if(key==='topic') payload['Topic'] = el.value;
+      else if(key==='goal') payload["Post's goal"] = el.value;
+      else if(key==='style') payload['Desired style'] = el.value;
+      else if(key==='audience') payload['Target audience'] = el.value;
+      else if(key==='format') payload['Output Format'] = el.value;
       else payload[key] = el.value;
     }
   });
 
-  // send update
+  // time
+  const ti = document.querySelector(`input[type="time"][data-time="${postId}"]`);
+  if(ti) payload['Plan Time'] = ti.value;
+
   try{
-    const res = await fetch(API_UPDATE, {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if(!res.ok) throw new Error('HTTP ' + res.status);
-    alert('✅ Cập nhật thành công');
-    await refreshAll(); // reflect changes
-  }catch(err){
-    console.error('saveHandler', err);
-    alert('Lưu thất bại: ' + err.message);
-  }
+    const r = await fetch(API_UPDATE, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    alert('Cập nhật thành công');
+    await loadPosts();
+  }catch(err){ console.error('savePost',err); alert('Lỗi lưu: '+err.message); }
 }
 
-/* Rewrite handler (call AI) */
-async function rewriteHandler(postId, textarea){
-  const overlay = document.getElementById('overlay');
+/* quick rewrite (single) */
+async function quickRewrite(postId, textarea){
+  // save snapshot
+  const post = POSTS.find(p=>String(p.post_id)===String(postId));
+  if(post) UNDO_CACHE[postId] = snapshotPost(post);
+
   try{
-    overlay.style.display = 'flex';
-    const res = await fetch(API_REWRITE, {
-      method:'POST',
-      headers:{ 'Content-Type':'application/json' },
-      body: JSON.stringify({ post_id: postId })
-    });
-    if(!res.ok) throw new Error('HTTP ' + res.status);
+    showOverlayModalBusy('Đang gọi AI để viết lại...');
+    const res = await fetch(API_REWRITE, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ post_id: postId, mode:'quick' }) });
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const json = await res.json();
     if(json.caption){
       textarea.value = json.caption;
       updateStats(postId, json.caption);
-    } else {
-      throw new Error('API rewrite trả về không có caption');
-    }
-  }catch(err){
-    console.error('rewriteHandler', err);
-    alert('Rewrite thất bại: ' + err.message);
-  }finally{
-    overlay.style.display = 'none';
-  }
+      // auto-save result
+      await savePost(postId);
+    } else throw new Error('API không trả caption');
+  }catch(err){ console.error('quickRewrite',err); alert('Rewrite lỗi: '+err.message); }
+  finally{ hideOverlay(); }
 }
 
-/* refresh both fields + posts */
-async function refreshAll(){
-  await loadFields();
+/* advanced rewrite (modal options) */
+function openRewriteModal(postId, textarea){
+  const html = `
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <h3>Advanced rewrite</h3>
+      <div class="small">Bạn có thể chỉnh tone, length, thêm CTA...</div>
+      <label>Tone
+        <select id="rewTone" class="select">
+          <option value="neutral">Neutral</option>
+          <option value="friendly">Friendly</option>
+          <option value="urgent">Urgent</option>
+          <option value="persuasive">Persuasive</option>
+        </select>
+      </label>
+      <label>Length
+        <select id="rewLen" class="select">
+          <option value="short">Short</option><option value="medium" selected>Medium</option><option value="long">Long</option>
+        </select>
+      </label>
+      <label><input id="rewKeepHash" type="checkbox" checked /> Giữ hashtag</label>
+      <div style="display:flex;gap:8px;justify-content:flex-end">
+        <button id="rwCancel" class="btn-ghost">Hủy</button>
+        <button id="rwDo" class="btn">Gọi AI & Rewrite</button>
+      </div>
+    </div>`;
+  showOverlay(html);
+  document.getElementById('rwCancel').onclick = hideOverlay;
+  document.getElementById('rwDo').onclick = async ()=>{
+    const tone = document.getElementById('rewTone').value;
+    const len = document.getElementById('rewLen').value;
+    const keep = document.getElementById('rewKeepHash').checked;
+    hideOverlay();
+    // call rewrite with options
+    try{
+      showOverlayModalBusy('AI đang viết lại — chờ trong giây lát...');
+      const res = await fetch(API_REWRITE, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ post_id: postId, mode:'advanced', tone, length:len, keep_hashtag: keep }) });
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const json = await res.json();
+      if(json.caption){
+        textarea.value = json.caption;
+        updateStats(postId, json.caption);
+        await savePost(postId);
+      } else throw new Error('API không trả caption');
+    }catch(err){ console.error('advanced rewrite',err); alert('Rewrite lỗi: '+err.message); }
+    finally{ hideOverlay(); }
+  };
+}
+
+/* overlay busy */
+function showOverlayModalBusy(text){
+  const html = `<div style="display:flex;align-items:center;gap:12px"><div class="loading-dot"></div><div>${text}</div></div>`;
+  showOverlay(html);
+}
+
+/* batch rewrite (selected) */
+document.getElementById('btnBatchRewrite').addEventListener('click', async ()=>{
+  if(SELECTED.size===0){ alert('Chưa chọn bài nào'); return; }
+  if(!confirm(`Rewrite ${SELECTED.size} bài?`)) return;
+  // proceed sequentially to avoid rate limits
+  for(const id of Array.from(SELECTED)){
+    const ta = document.getElementById('cap_'+id);
+    if(ta){
+      // show per-card small overlay? Here reuse global overlay per item
+      try{
+        showOverlayModalBusy(`Rewrite bài ${id}...`);
+        const res = await fetch(API_REWRITE, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ post_id: id, mode:'quick' }) });
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const json = await res.json();
+        if(json.caption){
+          ta.value = json.caption; updateStats(id, json.caption);
+          // save each
+          await savePost(id);
+        }
+      }catch(err){ console.error('batch rewrite',err); alert('Lỗi rewrite bài '+id+': '+err.message); }
+      finally{ hideOverlay(); }
+    }
+  }
+  alert('Batch rewrite hoàn tất');
+  await loadPosts();
+});
+
+/* batch change fields (open modal to set values) */
+document.getElementById('btnBatchChange').addEventListener('click', ()=>{
+  if(SELECTED.size===0){ alert('Chưa chọn bài nào'); return; }
+  // build form from FIELDS
+  const topicOpts = FIELDS.topic || [];
+  const goalOpts = FIELDS.goal || [];
+  const styleOpts = FIELDS.style || [];
+  const audOpts = FIELDS.audience || [];
+  const formatOpts = FIELDS.format || [];
+
+  const html = `<div style="display:flex;flex-direction:column;gap:12px">
+    <h3>Batch change fields — ${SELECTED.size} items</h3>
+    <label>Topic <select id="bTopic" class="select"><option value="">— (skip) —</option>${topicOpts.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></label>
+    <label>Post's goal <select id="bGoal" class="select"><option value="">— (skip) —</option>${goalOpts.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></label>
+    <label>Desired style <select id="bStyle" class="select"><option value="">— (skip) —</option>${styleOpts.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></label>
+    <label>Target audience <select id="bAud" class="select"><option value="">— (skip) —</option>${audOpts.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></label>
+    <label>Output Format <select id="bFormat" class="select"><option value="">— (skip) —</option>${formatOpts.map(o=>`<option value="${o}">${o}</option>`).join('')}</select></label>
+    <div style="display:flex;gap:8px;justify-content:flex-end">
+      <button id="bcCancel" class="btn-ghost">Hủy</button>
+      <button id="bcDo" class="btn">Áp dụng</button>
+    </div>
+  </div>`;
+  showOverlay(html);
+  document.getElementById('bcCancel').onclick = hideOverlay;
+  document.getElementById('bcDo').onclick = async ()=>{
+    const bTopic = document.getElementById('bTopic').value;
+    const bGoal = document.getElementById('bGoal').value;
+    const bStyle = document.getElementById('bStyle').value;
+    const bAud = document.getElementById('bAud').value;
+    const bFormat = document.getElementById('bFormat').value;
+    hideOverlay();
+    // build bulk payload
+    const items = [];
+    for(const id of Array.from(SELECTED)){
+      const item = { post_id: id };
+      if(bTopic) item.Topic = bTopic;
+      if(bGoal) item["Post's goal"] = bGoal;
+      if(bStyle) item['Desired style'] = bStyle;
+      if(bAud) item['Target audience'] = bAud;
+      if(bFormat) item['Output Format'] = bFormat;
+      items.push(item);
+    }
+    try{
+      // try bulk endpoint if available
+      const res = await fetch(API_BULK, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ items }) });
+      if(!res.ok){ // fallback to sequential updates using API_UPDATE
+        for(const it of items){
+          await fetch(API_UPDATE, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(it) });
+        }
+      }
+      alert('Áp dụng thay đổi batch thành công');
+      await loadPosts();
+    }catch(err){ console.error('batch change',err); alert('Batch change lỗi: '+err.message); }
+  };
+});
+
+/* Approve & Export */
+document.getElementById('btnApprove').addEventListener('click', async ()=>{
+  if(SELECTED.size===0) return alert('Chưa chọn bài nào');
+  if(!confirm('Bạn có chắc muốn mark APPROVED cho các bài đã chọn?')) return;
+  const items = Array.from(SELECTED).map(id=>({ post_id:id, Status:'Approved'}));
+  try{
+    // try bulk
+    const res = await fetch(API_BULK, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ items }) });
+    if(!res.ok){
+      for(const it of items) await fetch(API_UPDATE, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(it) });
+    }
+    alert('Đã approve');
+    await loadPosts();
+  }catch(err){ console.error(err); alert('Lỗi approve: '+err.message); }
+});
+document.getElementById('btnExport').addEventListener('click', ()=>{
+  if(SELECTED.size===0) return alert('Chưa chọn bài nào');
+  const rows = [['post_id','Title','Caption','Platform','Page','Plan Date','Plan Time']];
+  for(const id of Array.from(SELECTED)){
+    const p = POSTS.find(x=>String(x.post_id)===String(id));
+    if(p) rows.push([p.post_id, p.title, p.caption || p["Post Content"] || '', p.platform, p.page, p.plan_date, p.plan_time]);
+  }
+  const csv = rows.map(r=>r.map(c=>`"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'export.csv'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+/* Download sample CSV */
+document.getElementById('btnDownloadSample').addEventListener('click', ()=>{
+  // system will transform local path to usable URL when invoking tool
+  const path = SAMPLE_CSV;
+  // try direct navigation (may work in your environment)
+  window.open(path, '_blank');
+});
+
+/* search & filters */
+document.getElementById('searchBox').addEventListener('input', (e)=> applyFilters());
+document.querySelectorAll('#platformFilters input[type="checkbox"]').forEach(ch=>ch.addEventListener('change', ()=>applyFilters()));
+document.getElementById('statusFilter').addEventListener('change', ()=>applyFilters());
+function applyFilters(){
+  const q = document.getElementById('searchBox').value.toLowerCase();
+  const platforms = Array.from(document.querySelectorAll('#platformFilters input[type="checkbox"]:checked')).map(i=>i.value);
+  const status = document.getElementById('statusFilter').value;
+  document.querySelectorAll('#list .card').forEach(card=>{
+    const pid = card.dataset.post;
+    const p = POSTS.find(x=>String(x.post_id)===String(pid));
+    if(!p) { card.style.display='none'; return; }
+    // platform filter
+    if(platforms.length && !platforms.includes(p.platform)) { card.style.display='none'; return; }
+    // status filter
+    if(status && p.Status !== status) { card.style.display='none'; return; }
+    // search
+    const hay = (p.title+' '+(p.caption||'')+' '+(p.page||'')).toLowerCase();
+    if(q && !hay.includes(q)) { card.style.display='none'; return; }
+    card.style.display='flex';
+  });
+}
+
+/* save post time quick helper */
+async function savePostTime(postId, timeVal){
+  try{
+    const payload = { post_id: postId, 'Plan Time': timeVal };
+    const r = await fetch(API_UPDATE, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    alert('Đã cập nhật giờ');
+    await loadPosts();
+  }catch(err){ console.error('savePostTime',err); alert('Lỗi cập nhật giờ: '+err.message); }
+}
+
+/* quick load */
+document.getElementById('btnRefresh').addEventListener('click', async ()=>{
+  await initAll();
+});
+
+/* selected chips filter top */
+document.getElementById('chipBar').addEventListener('click', (e)=>{
+  const chip = e.target.closest('.chip'); if(!chip) return;
+  document.querySelectorAll('#chipBar .chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  const plat = chip.dataset.plat;
+  // toggle checkboxes in sidebar
+  document.querySelectorAll('#platformFilters input[type="checkbox"]').forEach(ch=>{
+    ch.checked = (plat==='all') ? true : (ch.value === plat);
+  });
+  applyFilters();
+});
+
+/* ========== INIT ========== */
+async function initAll(){
+  // show loading
+  showOverlayModalBusy('Tải dữ liệu...');
+  try{
+    await loadFields();
+    await loadPosts();
+  }catch(err){ console.error(err); }
+  hideOverlay();
+}
+window.addEventListener('load', ()=>initAll());
+
+/* ========== EXTRA: keep POSTS fresh when saving etc ========== */
+async function refreshAfterSave(){
   await loadPosts();
 }
 
-/* init */
-document.getElementById('btnRefresh').addEventListener('click', refreshAll);
-window.addEventListener('load', ()=>{
-  refreshAll();
-});
+/* end script */
 </script>
 </body>
 </html>
