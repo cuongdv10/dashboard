@@ -453,27 +453,82 @@ async function savePost(postId){
     await loadPosts();
   }catch(err){ console.error('savePost',err); alert('Lỗi lưu: '+err.message); }
 }
+  
+// quickRewrite: call AI, replace caption on card, DO NOT auto-save
+async function quickRewrite(postId) {
+  const ta = document.getElementById(`cap_${postId}`);
+  if(!ta) { alert('Không tìm được caption'); return; }
 
-/* quick rewrite (single) */
-async function quickRewrite(postId, textarea){
-  // save snapshot
-  const post = POSTS.find(p=>String(p.post_id)===String(postId));
+  // 1) Save snapshot for Undo
+  const post = POSTS.find(p => String(p.post_id) === String(postId));
   if(post) UNDO_CACHE[postId] = snapshotPost(post);
 
-  try{
-    showOverlayModalBusy('Đang gọi AI để viết lại...');
-    const res = await fetch(API_REWRITE, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ post_id: postId, mode:'quick' }) });
-    if(!res.ok) throw new Error('HTTP '+res.status);
+  // 2) UI: small inline loader on card (create or reuse)
+  let card = document.querySelector(`.card[data-post="${postId}"]`);
+  if(!card) {
+    card = document.querySelector(`.card`); // fallback
+  }
+  // create loader element if not exists
+  let loader = card.querySelector('.small-rewrite-loader');
+  if(!loader) {
+    loader = document.createElement('div');
+    loader.className = 'small-rewrite-loader';
+    loader.style.cssText = 'display:inline-flex;align-items:center;gap:8px;margin-left:8px;';
+    loader.innerHTML = '<div style="width:10px;height:10px;border-radius:50%;background:#ffb020;animation:spin 0.9s linear infinite"></div><span style="font-size:13px;color:#ff8c00">Đang viết lại...</span>';
+    // append near actions area
+    const actions = card.querySelector('.card-actions') || card;
+    actions && actions.insertBefore(loader, actions.firstChild);
+  }
+  loader.style.display = 'inline-flex';
+
+  // 3) Call API
+  try {
+    const res = await fetch(API_REWRITE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ post_id: postId, mode: 'quick' })
+    });
+    if(!res.ok) {
+      const text = await res.text().catch(()=>res.statusText);
+      throw new Error(`HTTP ${res.status} ${text}`);
+    }
     const json = await res.json();
-    if(json.caption){
-      textarea.value = json.caption;
+
+    if(json && json.caption) {
+      // replace caption on UI
+      ta.value = json.caption;
       updateStats(postId, json.caption);
-      // auto-save result
-      await savePost(postId);
-    } else throw new Error('API không trả caption');
-  }catch(err){ console.error('quickRewrite',err); alert('Rewrite lỗi: '+err.message); }
-  finally{ hideOverlay(); }
+
+      // show visual indicator "rewritten but unsaved"
+      let badge = card.querySelector('.rewrittenBadge');
+      if(!badge) {
+        badge = document.createElement('span');
+        badge.className = 'rewrittenBadge';
+        badge.style.cssText = 'display:inline-block;margin-left:8px;padding:6px 8px;border-radius:8px;background:#fff7ed;color:#b45309;font-size:13px';
+        badge.innerText = 'Đã rewrite (chưa lưu)';
+        const actions = card.querySelector('.card-actions') || card;
+        actions && actions.insertBefore(badge, actions.firstChild);
+      }
+      // enable Save button visually — we assume Save exists and clickable
+    } else {
+      throw new Error('API trả về không có caption');
+    }
+
+  } catch(err) {
+    console.error('quickRewrite error', err);
+    alert('Rewrite thất bại: ' + err.message);
+    // optional: restore from snapshot
+    const snap = UNDO_CACHE[postId];
+    if(snap && snap.caption) {
+      ta.value = snap.caption;
+      updateStats(postId, snap.caption);
+    }
+  } finally {
+    // hide loader after small delay to make UX smooth
+    setTimeout(()=> loader && (loader.style.display = 'none'), 350);
+  }
 }
+
 
 /* advanced rewrite (modal options) */
 function openRewriteModal(postId, textarea){
